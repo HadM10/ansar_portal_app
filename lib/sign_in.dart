@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
-import 'sign_up.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -44,6 +43,12 @@ class _SignInPageState extends State<SignInPage> {
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser != null) {
         // Authentication successful, proceed with your logic
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Signed in successfully with Google.'),
+            backgroundColor: Colors.green,
+          ),
+        );
         print('Signed in with Google: ${googleUser.email}');
       } else {
         // User canceled sign-in
@@ -53,6 +58,7 @@ class _SignInPageState extends State<SignInPage> {
       print('Google sign-in error: $error');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -86,16 +92,30 @@ class _SignInPageState extends State<SignInPage> {
               child: const Text('Sign In with Google'),
             ),
             const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () async {
+                await googleSignIn.signOut(); // Sign out from Google
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Signed out successfully.'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              },
+              child: const Text('Sign Out from Google'),
+            ),
+            const SizedBox(height: 16.0),
             TextButton(
               onPressed: () {
                 // Navigate to the sign-up screen
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SignUpPage()),
+                  MaterialPageRoute(builder: (context) => const SignUpPage()),
                 );
               },
               child: const Text('Don\'t have an account? Sign Up'),
             ),
+
           ],
         ),
       ),
