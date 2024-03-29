@@ -7,7 +7,7 @@ import 'bouncing_button.dart';
 import 'home.dart';
 
 class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+  const SignInPage({Key? key});
 
   @override
   _SignInPageState createState() => _SignInPageState();
@@ -61,17 +61,29 @@ class _SignInPageState extends State<SignInPage> {
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser != null) {
         // Authentication successful, proceed with your logic
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Signed in successfully with Google.'),
-            backgroundColor: Colors.green,
-          ),
+        final googleAuth = await googleUser.authentication;
+        final response = await http.post(
+          Uri.parse('http://192.168.1.12/ansar_portal/api/google_signin.php'),
+          body: {
+            'google_id': googleUser.id,
+            'email': googleUser.email,
+          },
         );
-        print('Signed in with Google: ${googleUser.email}');
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
+        if (response.statusCode == 200) {
+          // Navigate to the home screen or dashboard
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        } else {
+          // Google sign-in failed, display error message
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Google sign-in failed. Please try again.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       } else {
         // User canceled sign-in
         print('Google sign-in canceled.');
@@ -97,7 +109,7 @@ class _SignInPageState extends State<SignInPage> {
           // Content
           Padding(
             padding: const EdgeInsets.only(
-              top: 40.0,
+              top: 70.0,
               left: 20.0,
               right: 20.0,
               bottom: 20.0,
@@ -111,7 +123,6 @@ class _SignInPageState extends State<SignInPage> {
                     'assets/ansarportallogo.png',
                     // Replace 'your_app_logo.png' with your actual logo image asset path
                     height: 200,
-
                   ),
                   const SizedBox(height: 30),
                   // Email TextField
@@ -136,22 +147,23 @@ class _SignInPageState extends State<SignInPage> {
                           color: Colors.white,
                           shadows: [
                             Shadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 2)
+                              color: Colors.black.withOpacity(0.5),
+                              blurRadius: 2,
+                            )
                           ],
                         ),
                         hintStyle: TextStyle(
                           color: Colors.white.withOpacity(0.8),
                           shadows: [
                             Shadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 2)
+                              color: Colors.black.withOpacity(0.5),
+                              blurRadius: 2,
+                            )
                           ],
                         ),
                         contentPadding:
-                            const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                        const EdgeInsets.fromLTRB(12, 8, 12, 8),
                         // Adjust left padding here
-
                         focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                           borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -161,8 +173,9 @@ class _SignInPageState extends State<SignInPage> {
                         color: Colors.white,
                         shadows: [
                           Shadow(
-                              color: Colors.black.withOpacity(0.5),
-                              blurRadius: 2)
+                            color: Colors.black.withOpacity(0.5),
+                            blurRadius: 2,
+                          )
                         ],
                       ),
                     ),
@@ -191,22 +204,23 @@ class _SignInPageState extends State<SignInPage> {
                           color: Colors.white,
                           shadows: [
                             Shadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 2)
+                              color: Colors.black.withOpacity(0.5),
+                              blurRadius: 2,
+                            )
                           ],
                         ),
                         hintStyle: TextStyle(
                           color: Colors.white.withOpacity(0.8),
                           shadows: [
                             Shadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 2)
+                              color: Colors.black.withOpacity(0.5),
+                              blurRadius: 2,
+                            )
                           ],
                         ),
                         contentPadding:
-                            const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                        const EdgeInsets.fromLTRB(12, 8, 12, 8),
                         // Adjust left padding here
-
                         focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                           borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -217,8 +231,9 @@ class _SignInPageState extends State<SignInPage> {
                         color: Colors.white,
                         shadows: [
                           Shadow(
-                              color: Colors.black.withOpacity(0.5),
-                              blurRadius: 2)
+                            color: Colors.black.withOpacity(0.5),
+                            blurRadius: 2,
+                          )
                         ],
                       ),
                     ),
@@ -250,7 +265,8 @@ class _SignInPageState extends State<SignInPage> {
                         FaIcon(
                           FontAwesomeIcons.google,
                           size: 20,
-                          color: Colors.deepOrange[700], // You can set this to any color you want
+                          color:
+                          Colors.deepOrange[700], // You can set this to any color you want
                         ),
                         SizedBox(width: 10),
                         Text('Continue with Google'),
@@ -266,11 +282,13 @@ class _SignInPageState extends State<SignInPage> {
                       // Navigate to the sign-up screen
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const SignUpPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const SignUpPage()),
                       );
                     },
                     style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
                       foregroundColor: Colors.white, // text color
                       textStyle: const TextStyle(
                         fontWeight: FontWeight.bold,
@@ -282,19 +300,18 @@ class _SignInPageState extends State<SignInPage> {
                       side: BorderSide.none,
                       elevation: 10,
                       shadowColor: Colors.black,
-                      backgroundColor: Colors.white24
-                      , // button color
+                      backgroundColor: Colors.white24, // button color
                     ),
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.person_add, color: Colors.white), // example icon
+                        Icon(Icons.person_add,
+                            color: Colors.white), // example icon
                         SizedBox(width: 10),
                         Text("Don't have an account? Sign Up"),
                       ],
                     ),
                   ),
-
 
                   // Add bottom margin to create space at the bottom
                   const SizedBox(height: 50),
@@ -307,5 +324,3 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 }
-
-

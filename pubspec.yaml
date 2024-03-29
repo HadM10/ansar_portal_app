@@ -58,6 +58,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/signinpage.jpeg
+    - assets/signuppage.jpeg
     - assets/ansarportallogofinal.png
     - assets/ansarlogo.png
     - assets/ansarportallogo.png
