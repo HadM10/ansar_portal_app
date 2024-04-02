@@ -5,13 +5,12 @@ class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   Future<void> _signOut(BuildContext context) async {
+    // Your sign-out logic here
     final GoogleSignIn googleSignIn = GoogleSignIn();
     try {
       await googleSignIn.signOut();
-      // Navigate back to the sign-in page
       Navigator.pushReplacementNamed(context, '/');
     } catch (error) {
-      // Handle sign-out error
       print('Error signing out: $error');
     }
   }
@@ -19,15 +18,108 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
+      body: Stack(
+        children: [
+          // Background image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/home.jpeg', // Replace with your actual image path
+              fit: BoxFit.cover,
+            ),
+          ),
+          // Black layer
+          Container(
+            color: Colors.black.withOpacity(0.2), // Adjust opacity as needed
+          ),
+          // Logo and welcome message
+          Positioned(
+            top: 80,
+            left: 0,
+            right: 0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/ansarportallogo.png', // Replace with your actual logo image path
+                  height: 200,
+                ),
+                const SizedBox(height: 50),
+                Text(
+                  'WELCOME',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Kuro',
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    // Add any other styles you want
+                  ),
+                ),
+                Text(
+                  'TO ANSAR PORTAL',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Kuro',
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    // Add any other styles you want
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Icons below (arranged in rows of three)
+          Positioned(
+            bottom: 50,
+            left: 20,
+            right: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildIconWithLabel(Icons.local_offer, 'DEALS'),
+                _buildIconWithLabel(Icons.event, 'EVENTS'),
+                GestureDetector(
+                  onTap: () => _signOut(context),
+                  child: _buildIconWithLabel(Icons.logout, 'LOGOUT'),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 170,
+            left: 20,
+            right: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildIconWithLabel(Icons.store, 'STORES'),
+                _buildIconWithLabel(Icons.category, 'CATEGORIES'),
+                _buildIconWithLabel(Icons.article, 'NEWS'),
+              ],
+            ),
+          ),
+        ],
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () => _signOut(context),
-          child: const Text('Logout'),
+    );
+  }
+
+  Widget _buildIconWithLabel(IconData icon, String label) {
+    return Column(
+      children: [
+        Container(
+          width: 60,
+          height: 60,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Color(0xFFF5DEB3),
+          ),
+          child: Icon(icon, size: 40, color: Colors.deepOrange[700]),
         ),
-      ),
+        SizedBox(height: 8),
+        Text(
+          label,
+          style: TextStyle(color: Colors.white),
+        ),
+      ],
     );
   }
 }

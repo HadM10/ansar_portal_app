@@ -26,9 +26,20 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Future<void> signIn() async {
+    // Check if email or password is empty
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter both email and password.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return; // Return if any field is empty
+    }
+
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.1.12/ansar_portal/api/signin.php'),
+        Uri.parse('http://192.168.1.5/ansar_portal/api/signin.php'),
         body: {
           'email': emailController.text,
           'password': passwordController.text,
@@ -46,7 +57,7 @@ class _SignInPageState extends State<SignInPage> {
         // Sign-in failed, display error message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Sign-in failed. Please try again.'),
+            content: Text('Wrong email or password . Please try again.'),
             backgroundColor: Colors.red,
           ),
         );
@@ -63,7 +74,7 @@ class _SignInPageState extends State<SignInPage> {
         // Authentication successful, proceed with your logic
         final googleAuth = await googleUser.authentication;
         final response = await http.post(
-          Uri.parse('http://192.168.1.12/ansar_portal/api/google_signin.php'),
+          Uri.parse('http://192.168.1.5/ansar_portal/api/google_signin.php'),
           body: {
             'google_id': googleUser.id,
             'email': googleUser.email,

@@ -19,7 +19,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Future<void> signUp() async {
     if (_formKey.currentState!.validate()) {
       final response = await http.post(
-        Uri.parse('http://192.168.1.12/ansar_portal/api/signup.php'),
+        Uri.parse('http://192.168.1.5/ansar_portal/api/signup.php'),
         body: {
           'username': usernameController.text,
           'email': emailController.text,
