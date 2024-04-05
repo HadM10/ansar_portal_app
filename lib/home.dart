@@ -1,3 +1,4 @@
+import 'package:ansar_portal_mobile_app/stores.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -91,7 +92,15 @@ class HomePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildIconWithLabel(Icons.store, 'STORES'),
+                GestureDetector( // Wrap the store icon with GestureDetector
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => StoresPage()), // Navigate to StoresPage
+                    );
+                  },
+                  child: _buildIconWithLabel(Icons.store, 'STORES'),
+                ),
                 _buildIconWithLabel(Icons.category, 'CATEGORIES'),
                 _buildIconWithLabel(Icons.article, 'NEWS'),
               ],

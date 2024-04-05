@@ -1,5 +1,6 @@
 import 'package:ansar_portal_mobile_app/sign_up.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
@@ -17,6 +18,7 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  final storage = FlutterSecureStorage();
 
   @override
   void dispose() {
@@ -48,20 +50,37 @@ class _SignInPageState extends State<SignInPage> {
 
       if (response.statusCode == 200) {
         // Successful sign-in
-        // Navigate to the home screen or dashboard
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
+        final userId = response.body;
+        print(userId);
+        // Store user ID securely
+        await storage.write(key: 'userId', value: userId)
+            .then((_) {
+          // Navigate to the home screen or dashboard
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        })
+            .catchError((error) {
+          // Handle error
+          print('Error saving user ID: $error');
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to save user ID.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        });
       } else {
         // Sign-in failed, display error message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Wrong email or password . Please try again.'),
+            content: Text('Wrong email or password. Please try again.'),
             backgroundColor: Colors.red,
           ),
         );
       }
+
     } catch (error) {
       print('Error signing in: $error');
     }
