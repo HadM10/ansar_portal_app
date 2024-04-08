@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class BouncingButton extends StatefulWidget {
   final VoidCallback onPressed;
 
-  const BouncingButton({Key? key, required this.onPressed}) : super(key: key);
+  const BouncingButton({super.key, required this.onPressed});
 
   @override
   _BouncingButtonState createState() => _BouncingButtonState();
@@ -65,7 +65,7 @@ class _BouncingButtonState extends State<BouncingButton> with SingleTickerProvid
 class SignUpButton extends StatefulWidget {
   final VoidCallback onPressed;
 
-  const SignUpButton({Key? key, required this.onPressed}) : super(key: key);
+  const SignUpButton({super.key, required this.onPressed});
 
   @override
   _SignUpButtonState createState() => _SignUpButtonState();

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ansar_portal_mobile_app/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -18,7 +20,7 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final GoogleSignIn googleSignIn = GoogleSignIn();
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 
   @override
   void dispose() {
@@ -100,11 +102,29 @@ class _SignInPageState extends State<SignInPage> {
           },
         );
         if (response.statusCode == 200) {
-          // Navigate to the home screen or dashboard
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
-          );
+          final Map<String, dynamic> jsonResponse = json.decode(response.body);
+          final userId = jsonResponse['user_id']; // Extract user_id from the response
+          print('Google Sign-in User ID: $userId');
+
+          // Store user ID securely
+          await storage.write(key: 'userId', value: userId.toString())
+              .then((_) {
+            // Navigate to the home screen or dashboard
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          })
+              .catchError((error) {
+            // Handle error
+            print('Error saving Google sign-in user ID: $error');
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Failed to save user ID.'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          });
         } else {
           // Google sign-in failed, display error message
           ScaffoldMessenger.of(context).showSnackBar(
@@ -122,6 +142,8 @@ class _SignInPageState extends State<SignInPage> {
       print('Google sign-in error: $error');
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +186,7 @@ class _SignInPageState extends State<SignInPage> {
                           color: Colors.black.withOpacity(0.5),
                           spreadRadius: 1,
                           blurRadius: 3,
-                          offset: Offset(0, 0),
+                          offset: const Offset(0, 0),
                         ),
                       ],
                     ),
@@ -298,8 +320,8 @@ class _SignInPageState extends State<SignInPage> {
                           color:
                           Colors.deepOrange[700], // You can set this to any color you want
                         ),
-                        SizedBox(width: 10),
-                        Text('Continue with Google'),
+                        const SizedBox(width: 10),
+                        const Text('Continue with Google'),
                       ],
                     ),
                   ),

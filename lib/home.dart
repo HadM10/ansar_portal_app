@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   Future<void> _signOut(BuildContext context) async {
     // Your sign-out logic here
@@ -45,7 +45,7 @@ class HomePage extends StatelessWidget {
                   height: 200,
                 ),
                 const SizedBox(height: 50),
-                Text(
+                const Text(
                   'WELCOME',
                   style: TextStyle(
                     color: Colors.white,
@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
                     // Add any other styles you want
                   ),
                 ),
-                Text(
+                const Text(
                   'TO ANSAR PORTAL',
                   style: TextStyle(
                     color: Colors.white,
@@ -96,7 +96,7 @@ class HomePage extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => StoresPage()), // Navigate to StoresPage
+                      MaterialPageRoute(builder: (context) => const StoresPage()), // Navigate to StoresPage
                     );
                   },
                   child: _buildIconWithLabel(Icons.store, 'STORES'),
@@ -117,16 +117,16 @@ class HomePage extends StatelessWidget {
         Container(
           width: 60,
           height: 60,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
             color: Color(0xFFF5DEB3),
           ),
           child: Icon(icon, size: 40, color: Colors.deepOrange[700]),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
           label,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
       ],
     );

@@ -35,6 +35,8 @@ class Store {
 
 // Define StoresPage widget
 class StoresPage extends StatefulWidget {
+  const StoresPage({Key? key}) : super(key: key);
+
   @override
   _StoresPageState createState() => _StoresPageState();
 }
@@ -43,7 +45,7 @@ class StoresPage extends StatefulWidget {
 class _StoresPageState extends State<StoresPage> {
   List<Store> stores = [];
   String? userId; // Store user ID retrieved from session
-  final storage = FlutterSecureStorage(); // Instance of Flutter Secure Storage
+  final storage = const FlutterSecureStorage(); // Instance of Flutter Secure Storage
 
   // Method to fetch stores from the server
   Future<void> fetchStores() async {
@@ -56,9 +58,10 @@ class _StoresPageState extends State<StoresPage> {
           // Populate stores list from JSON response
           stores = jsonResponse.map((store) => Store.fromJson(store)).toList();
         });
+        // Fetch user ID
+        await getUserId();
         // Fetch user likes after loading stores
-        await getUserId(); // Retrieve user ID
-        await fetchUserLikes(); // Fetch user likes
+        await fetchUserLikes();
       } else {
         throw Exception('Failed to load stores');
       }
@@ -74,23 +77,26 @@ class _StoresPageState extends State<StoresPage> {
     print('User ID: $userId'); // Print user ID
   }
 
-  // Method to fetch user likes from the server
   Future<void> fetchUserLikes() async {
     try {
       // Make POST request to fetch user likes with user ID from session
       final response = await http.post(
         Uri.parse('http://192.168.1.5/ansar_portal/api/fetch_user_likes.php'),
-        body: {'user_id': userId},
+        body: {'user_id': userId!},
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonResponse = json.decode(response.body); // Changed to Map
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+        print('Fetch User Likes Response: $jsonResponse'); // Print response
         setState(() {
+          // Convert the list of liked store IDs to a set for efficient lookup
+          final likedStoreIdsSet = Set<int>.from(jsonResponse['liked_stores']);
+
           // Update isLiked property for each store based on user likes
-          stores.forEach((store) {
-            final isLiked = jsonResponse['liked_stores'].contains(store.id.toString());
+          for (var store in stores) {
+            final isLiked = likedStoreIdsSet.contains(store.id);
             print('Store ${store.id} isLiked: $isLiked');
             store.isLiked = isLiked;
-          });
+          }
         });
       } else {
         throw Exception('Failed to load user likes');
@@ -108,7 +114,7 @@ class _StoresPageState extends State<StoresPage> {
       final response = await http.post(
         Uri.parse('http://192.168.1.5/ansar_portal/api/like_store.php'),
         body: {
-          'user_id': userId,
+          'user_id': userId!,
           'store_id': store.id.toString(),
           'action': store.isLiked ? 'unlike' : 'like',
         },
@@ -124,9 +130,10 @@ class _StoresPageState extends State<StoresPage> {
           } else {
             store.totalLikes--;
           }
-          // Save the updated liked status locally
-          saveLikedStatus(store.id.toString(), store.isLiked);
         });
+
+        // Save the updated liked status locally
+        await saveLikedStatus(store.id.toString(), store.isLiked);
       } else {
         throw Exception('Failed to toggle like');
       }
@@ -141,8 +148,6 @@ class _StoresPageState extends State<StoresPage> {
   void initState() {
     super.initState();
     fetchStores(); // Fetch stores and user ID
-    getUserId(); // Retrieve user ID
-    fetchUserLikes(); // Fetch user likes
   }
 
   // Method to save the liked status locally
@@ -161,40 +166,69 @@ class _StoresPageState extends State<StoresPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Stores'),
+        title: const Text('Stores', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.deepOrange[700], // Dark orange background color
       ),
       body: ListView.builder(
         itemCount: stores.length,
         itemBuilder: (context, index) {
           final store = stores[index];
-          final String firstImage = store.images.isNotEmpty ? store.images.first : ''; // Get the first image URL
-          return ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(firstImage), // Display the first image as the leading avatar
-            ),
-            title: Text(store.name),
-            subtitle: Text(store.description),
-            trailing: IconButton(
-              icon: Icon(
-                store.isLiked ? Icons.favorite : Icons.favorite_border, // Display filled heart if liked, otherwise outline heart
-                color: store.isLiked ? Colors.red : null, // Red color if liked, null otherwise
+          final String firstImage = store.images.isNotEmpty ? store.images.first : '';
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0), // Adjust padding as needed
+            child: Card(
+              elevation: 4, // Add elevation for a raised effect
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), // Add rounded corners
+              child: ListTile(
+                contentPadding: EdgeInsets.all(16), // Add padding inside the ListTile
+                leading: CircleAvatar(
+                  radius: 30, // Increase the radius of the CircleAvatar
+                  backgroundImage: NetworkImage(firstImage),
+                ),
+                title: Padding(
+                  padding: EdgeInsets.only(bottom: 4.0), // Add bottom padding
+                  child: Text(
+                    store.name,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Adjust font size and weight
+                  ),
+                ),
+                subtitle: Text(
+                  store.description,
+                  style: TextStyle(fontSize: 14), // Adjust font size
+                ),
+                trailing: Row( // Use Row instead of Column
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      iconSize: 30, // Increase the size of the IconButton
+                      icon: store.isLiked
+                          ? Icon(Icons.favorite, color: Colors.red)
+                          : Icon(Icons.favorite_border),
+                      onPressed: () => toggleLike(store),
+                    ),
+                    Text(
+                      '${store.totalLikes} Likes',
+                      style: TextStyle(fontSize: 14), // Adjust font size
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  // Navigate to a detailed store page
+                  // You can pass the store object to the next page to display more details
+                },
               ),
-              onPressed: () => toggleLike(store), // Toggle like/unlike on button press
             ),
-            onTap: () {
-              // Navigate to a detailed store page
-              // You can pass the store object to the next page to display more details
-            },
           );
         },
       ),
+      backgroundColor: Colors.white, // White background color
     );
   }
 }
 
 // Define main() function to run the app
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: StoresPage(),
   ));
 }
