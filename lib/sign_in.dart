@@ -95,7 +95,7 @@ class _SignInPageState extends State<SignInPage> {
         // Authentication successful, proceed with your logic
         final googleAuth = await googleUser.authentication;
         final response = await http.post(
-          Uri.parse('http://192.168.1.5/ansar_portal/api/google_signin.php'),
+          Uri.parse('http://192.168.1.8/ansar_portal/api/google_signin.php'),
           body: {
             'google_id': googleUser.id,
             'email': googleUser.email,
