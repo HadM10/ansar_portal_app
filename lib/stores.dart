@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ansar_portal_mobile_app/store_details.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -53,13 +54,14 @@ class _StoresPageState extends State<StoresPage> {
     try {
       // Make GET request to fetch stores
       final response = await http.get(
-          Uri.parse('http://192.168.1.8/ansar_portal/api/view_stores.php'));
+          Uri.parse('http://192.168.1.12/ansar_portal/api/view_stores.php'));
       if (response.statusCode == 200) {
         final List<dynamic> jsonResponse = json.decode(response.body);
         setState(() {
           // Populate stores list from JSON response
           stores = jsonResponse.map((store) => Store.fromJson(store)).toList();
-          filteredStores = List.from(stores); // Initialize filtered stores with all stores
+          filteredStores =
+              List.from(stores); // Initialize filtered stores with all stores
         });
         // Fetch user ID
         await getUserId();
@@ -84,7 +86,7 @@ class _StoresPageState extends State<StoresPage> {
     try {
       // Make POST request to fetch user likes with user ID from session
       final response = await http.post(
-        Uri.parse('http://192.168.1.8/ansar_portal/api/fetch_user_likes.php'),
+        Uri.parse('http://192.168.1.12/ansar_portal/api/fetch_user_likes.php'),
         body: {'user_id': userId!},
       );
       if (response.statusCode == 200) {
@@ -115,7 +117,7 @@ class _StoresPageState extends State<StoresPage> {
     try {
       // Make POST request to like/unlike a store with user ID from session
       final response = await http.post(
-        Uri.parse('http://192.168.1.8/ansar_portal/api/like_store.php'),
+        Uri.parse('http://192.168.1.12/ansar_portal/api/like_store.php'),
         body: {
           'user_id': userId!,
           'store_id': store.id.toString(),
@@ -162,13 +164,15 @@ class _StoresPageState extends State<StoresPage> {
       if (query.isNotEmpty) {
         // Make GET request to search stores
         http.Response response = await http.get(
-          Uri.parse('http://192.168.1.8/ansar_portal/api/search_stores.php?query=$query'),
+          Uri.parse(
+              'http://192.168.1.12/ansar_portal/api/search_stores.php?query=$query'),
         );
         if (response.statusCode == 200) {
           final List<dynamic> jsonResponse = json.decode(response.body);
           setState(() {
             // Update filteredStores with search results
-            filteredStores = jsonResponse.map((store) => Store.fromJson(store)).toList();
+            filteredStores =
+                jsonResponse.map((store) => Store.fromJson(store)).toList();
           });
           // Fetch user ID
           await getUserId();
@@ -187,9 +191,9 @@ class _StoresPageState extends State<StoresPage> {
   }
 
 
-
   // Define a TextEditingController
   late TextEditingController _searchController;
+
   // Override initState() method to fetch stores, user ID, and liked status when widget is initialized
   @override
   void initState() {
@@ -197,6 +201,7 @@ class _StoresPageState extends State<StoresPage> {
     _searchController = TextEditingController();
     fetchStores(); // Fetch stores and user ID
   }
+
   @override
   void dispose() {
     // Dispose the TextEditingController
@@ -205,12 +210,13 @@ class _StoresPageState extends State<StoresPage> {
   }
 
 
-  // Override build() method to build the widget UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('STORES', style: TextStyle(color: Colors.white, fontFamily: 'kuro', fontWeight: FontWeight.bold)),
+        title: const Text('STORES', style: TextStyle(color: Colors.white,
+            fontFamily: 'kuro',
+            fontWeight: FontWeight.bold)),
         backgroundColor: Colors.deepOrange[700], // Dark orange background color
         centerTitle: true,
         iconTheme: IconThemeData(color: Colors.white),
@@ -236,7 +242,8 @@ class _StoresPageState extends State<StoresPage> {
                   onPressed: () {
                     _searchController.clear(); // Clear the search text
                     setState(() {
-                      handleSearch(''); // Reset the filtered stores to show all stores
+                      handleSearch(
+                          ''); // Reset the filtered stores to show all stores
                     });
                   },
                 ),
@@ -250,67 +257,99 @@ class _StoresPageState extends State<StoresPage> {
               itemCount: filteredStores.length,
               itemBuilder: (context, index) {
                 final store = filteredStores[index];
-                final String firstImage = store.images.isNotEmpty ? store.images.first : '';
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0), // Adjust padding as needed
-                  child: Card(
-                    elevation: 4, // Add elevation for a raised effect
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), // Add rounded corners
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        AspectRatio(
-                          aspectRatio: 4/3, // Set aspect ratio for the image
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                            child: Image.network(
-                              firstImage,
-                              fit: BoxFit.cover,
+                final String firstImage = store.images.isNotEmpty ? store.images
+                    .first : '';
+
+
+                return GestureDetector(
+                  onTap: () {
+                    if (filteredStores.isNotEmpty && index < filteredStores.length) {
+                      final store = filteredStores[index];
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StoreDetailsPage(storeId: store.id),
+                        ),
+                      );
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 16.0),
+                    // Adjust padding as needed
+                    child: Card(
+                      elevation: 4,
+                      // Add elevation for a raised effect
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      // Add rounded corners
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          AspectRatio(
+                            aspectRatio: 4 / 3,
+                            // Set aspect ratio for the image
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(10)),
+                              child: Image.network(
+                                firstImage,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(16), // Add padding inside the card
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                          Padding(
+                            padding: EdgeInsets.all(16),
+                            // Add padding inside the card
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      SizedBox(height: 8),
+                                      Text(
+                                        store.name,
+                                        style: TextStyle(fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'kuro'), // Adjust font size and weight
+                                      ),
+                                      SizedBox(height: 8),
+                                      // Add spacing between title and description
+                                      Text(
+                                        store.description,
+                                        style: TextStyle(fontSize: 14,
+                                            fontFamily: 'kuro'), // Adjust font size
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    SizedBox(height: 8),
-                                    Text(
-                                      store.name,
-                                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'kuro'), // Adjust font size and weight
+                                    IconButton(
+                                      iconSize: 30,
+                                      // Increase the size of the IconButton
+                                      icon: store.isLiked
+                                          ? Icon(
+                                          Icons.favorite, color: Colors.red)
+                                          : Icon(Icons.favorite_border),
+                                      onPressed: () => toggleLike(store),
                                     ),
-                                    SizedBox(height: 8), // Add spacing between title and description
                                     Text(
-                                      store.description,
-                                      style: TextStyle(fontSize: 14, fontFamily: 'kuro'), // Adjust font size
+                                      '${store.totalLikes} Likes',
+                                      style: TextStyle(fontSize: 14,
+                                          fontFamily: 'kuro'), // Adjust font size
                                     ),
                                   ],
                                 ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                    iconSize: 30, // Increase the size of the IconButton
-                                    icon: store.isLiked
-                                        ? Icon(Icons.favorite, color: Colors.red)
-                                        : Icon(Icons.favorite_border),
-                                    onPressed: () => toggleLike(store),
-                                  ),
-                                  Text(
-                                    '${store.totalLikes} Likes',
-                                    style: TextStyle(fontSize: 14, fontFamily: 'kuro'), // Adjust font size
-                                  ),
-                                ],
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -323,7 +362,6 @@ class _StoresPageState extends State<StoresPage> {
     );
   }
 }
-
 // Define main() function to run the app
 void main() {
   runApp(const MaterialApp(
