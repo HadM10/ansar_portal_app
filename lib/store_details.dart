@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class StoreDetailsPage extends StatefulWidget {
   final int storeId;
@@ -24,7 +26,8 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://192.168.1.12/ansar_portal/api/store_details.php?store_id=${widget.storeId}'),
+            'http://192.168.1.4/ansar_portal/api/store_details.php?store_id=${widget
+                .storeId}'),
       );
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
@@ -73,19 +76,26 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
             ),
           ),
         ),
-
       ],
     );
   }
 
-  Widget _buildDetailRow(IconData icon, String value) {
+  Widget _buildDetailRow(IconData icon, String value, String? url) {
     return Row(
       children: [
         Icon(icon, size: 40),
         SizedBox(width: 8),
-        Text(
-          '$value',
-          style: TextStyle(fontSize: 18, fontFamily: 'kuro'),
+        InkWell(
+          onTap: () {
+            // Add code to open the corresponding social media link
+            if (url != null && url.isNotEmpty) {
+              _launchURL(url);
+            }
+          },
+          child: Text(
+            '$value',
+            style: TextStyle(fontSize: 18, fontFamily: 'kuro'),
+          ),
         ),
       ],
     );
@@ -106,23 +116,22 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: double.infinity, // Make the container span the full width
-                    color: Colors.grey.shade900, // Dark gray background color
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16), // Add padding
+                    width: double.infinity,
+                    color: Colors.grey.shade900,
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                     child: Text(
                       storeDetails!['store_name'],
                       style: TextStyle(
                         fontSize: 24,
                         fontFamily: 'kuro',
                         fontWeight: FontWeight.bold,
-                        color: Colors.white, // White text color
+                        color: Colors.white,
                       ),
                     ),
                   ),
-
                   SizedBox(height: 8),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10), // Add horizontal padding
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -130,42 +139,76 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                           storeDetails!['description'],
                           style: TextStyle(fontSize: 18, fontFamily: 'kuro'),
                         ),
-                        SizedBox(height: 20), // Add some space between the text and the line
+                        SizedBox(height: 20),
                         Container(
                           height: 1,
-                          color: Colors.grey.shade900, // Color of the line
+                          color: Colors.grey.shade900,
                         ),
                       ],
                     ),
                   ),
-
                   SizedBox(height: 10),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16), // Add horizontal padding
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: _buildDetailRow(Icons.store,
-                      storeDetails!['category_name']),
+                        storeDetails!['category_name'], null),
                   ),
                   SizedBox(height: 15),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16), // Add horizontal padding
-                child: _buildDetailRow(Icons.phone_android,
-                      storeDetails!['phone_number']),
-              ),
-                  SizedBox(height: 15),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16), // Add horizontal padding
-                child: InkWell(
-                    onTap: () {
-                      // Add code to open map with store location
-                    },
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: _buildDetailRow(
-                        Icons.location_on, 'Store Location'),
+                        Icons.phone_android, storeDetails!['phone_number'],
+                        null),
                   ),
-              ),
                   SizedBox(height: 15),
-                  // Display store rating using stars (optional)
-                  // You can use a custom widget for star ratings
-                  // Example: StarRating(rating: storeDetails['rating'])
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: InkWell(
+                      onTap: () {
+                        // Add code to open map with store location
+                      },
+                      child: _buildDetailRow(
+                          Icons.location_on, 'Store Location', null),
+                    ),
+                  ),
+                  SizedBox(height: 50),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconButton(
+                        icon: Icon(FontAwesomeIcons.facebook),
+                        color: Color(0xFF3b5998),
+                        iconSize: 45,// Facebook blue color
+                        onPressed: () {
+                          _launchURL(storeDetails!['facebook_url']);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(FontAwesomeIcons.instagram),
+                        color: Color(0xFFc32aa3),
+                        iconSize: 45,
+                        onPressed: () {
+                          _launchURL(storeDetails!['instagram_url']);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(FontAwesomeIcons.whatsapp),
+                        color: Color(0xFF25d366),
+                        iconSize: 45,
+                        onPressed: () {
+                          _launchURL(storeDetails!['whatsapp_number']);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.tiktok),
+                        color: Color(0xFF000000),
+                        iconSize: 45,
+                        onPressed: () {
+                          _launchURL(storeDetails!['tiktok_url']);
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -177,4 +220,18 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
       ),
     );
   }
+
+  Future<void> _launchURL(String url) async {
+    Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+
+
+
 }
+

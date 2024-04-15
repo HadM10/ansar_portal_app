@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:ansar_portal_mobile_app/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -43,7 +42,7 @@ class _SignInPageState extends State<SignInPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.1.5/ansar_portal/api/signin.php'),
+        Uri.parse('http://192.168.1.4/ansar_portal/api/signin.php'),
         body: {
           'email': emailController.text,
           'password': passwordController.text,
@@ -95,7 +94,7 @@ class _SignInPageState extends State<SignInPage> {
         // Authentication successful, proceed with your logic
         final googleAuth = await googleUser.authentication;
         final response = await http.post(
-          Uri.parse('http://192.168.1.12/ansar_portal/api/google_signin.php'),
+          Uri.parse('http://192.168.1.4/ansar_portal/api/google_signin.php'),
           body: {
             'google_id': googleUser.id,
             'email': googleUser.email,

@@ -1,14 +1,14 @@
 import 'dart:convert';
-import 'package:ansar_portal_mobile_app/store_details.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:ansar_portal_mobile_app/store_details.dart';
 
-// Define Store class
 class Store {
   final int id;
   final String name;
   final String description;
+  final List<String> categories; // Added categories property
   int totalLikes;
   final List<String> images;
   bool isLiked;
@@ -17,24 +17,24 @@ class Store {
     required this.id,
     required this.name,
     required this.description,
+    required this.categories,
     required this.totalLikes,
     required this.images,
     this.isLiked = false,
   });
 
-  // Factory method to create Store object from JSON
   factory Store.fromJson(Map<String, dynamic> json) {
     return Store(
       id: int.parse(json['store_id'].toString()),
       name: json['store_name'] ?? '',
       description: json['description'] ?? '',
+      categories: List<String>.from(json['categories'] ?? []),
       totalLikes: int.tryParse(json['total_likes'].toString()) ?? 0,
       images: List<String>.from(json['images'] ?? []),
     );
   }
 }
 
-// Define StoresPage widget
 class StoresPage extends StatefulWidget {
   const StoresPage({Key? key}) : super(key: key);
 
@@ -42,39 +42,50 @@ class StoresPage extends StatefulWidget {
   _StoresPageState createState() => _StoresPageState();
 }
 
-// Define _StoresPageState class
 class _StoresPageState extends State<StoresPage> {
   List<Store> stores = [];
   List<Store> filteredStores = [];
-  String? userId; // Store user ID retrieved from session
-  final storage = const FlutterSecureStorage(); // Instance of Flutter Secure Storage
+  List<String> categories = [];
+  String? selectedCategory;
+  String? userId;
+  final storage = const FlutterSecureStorage();
 
-  // Method to fetch stores from the server
+
   Future<void> fetchStores() async {
     try {
-      // Make GET request to fetch stores
-      final response = await http.get(
-          Uri.parse('http://192.168.1.12/ansar_portal/api/view_stores.php'));
+      final response = await http.get(Uri.parse('http://192.168.1.4/ansar_portal/api/view_stores.php'));
       if (response.statusCode == 200) {
         final List<dynamic> jsonResponse = json.decode(response.body);
         setState(() {
-          // Populate stores list from JSON response
           stores = jsonResponse.map((store) => Store.fromJson(store)).toList();
-          filteredStores =
-              List.from(stores); // Initialize filtered stores with all stores
+          filteredStores = List.from(stores);
         });
-        // Fetch user ID
         await getUserId();
-        // Fetch user likes after loading stores
         await fetchUserLikes();
       } else {
         throw Exception('Failed to load stores');
       }
     } catch (error) {
       print('Error fetching stores: $error');
-      // Handle error accordingly
     }
   }
+
+  Future<void> fetchCategories() async {
+    try {
+      final response = await http.get(Uri.parse('http://192.168.1.4/ansar_portal/api/view_categories.php'));
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonResponse = json.decode(response.body);
+        setState(() {
+          categories = jsonResponse.map((category) => category['category_name'].toString()).toList();
+        });
+      } else {
+        throw Exception('Failed to load categories');
+      }
+    } catch (error) {
+      print('Error fetching categories: $error');
+    }
+  }
+
 
   // Method to retrieve user ID from Flutter Secure Storage
   Future<void> getUserId() async {
@@ -86,7 +97,7 @@ class _StoresPageState extends State<StoresPage> {
     try {
       // Make POST request to fetch user likes with user ID from session
       final response = await http.post(
-        Uri.parse('http://192.168.1.12/ansar_portal/api/fetch_user_likes.php'),
+        Uri.parse('http://192.168.1.4/ansar_portal/api/fetch_user_likes.php'),
         body: {'user_id': userId!},
       );
       if (response.statusCode == 200) {
@@ -117,7 +128,7 @@ class _StoresPageState extends State<StoresPage> {
     try {
       // Make POST request to like/unlike a store with user ID from session
       final response = await http.post(
-        Uri.parse('http://192.168.1.12/ansar_portal/api/like_store.php'),
+        Uri.parse('http://192.168.1.4/ansar_portal/api/like_store.php'),
         body: {
           'user_id': userId!,
           'store_id': store.id.toString(),
@@ -165,7 +176,7 @@ class _StoresPageState extends State<StoresPage> {
         // Make GET request to search stores
         http.Response response = await http.get(
           Uri.parse(
-              'http://192.168.1.12/ansar_portal/api/search_stores.php?query=$query'),
+              'http://192.168.1.4/ansar_portal/api/search_stores.php?query=$query'),
         );
         if (response.statusCode == 200) {
           final List<dynamic> jsonResponse = json.decode(response.body);
@@ -200,6 +211,7 @@ class _StoresPageState extends State<StoresPage> {
     super.initState();
     _searchController = TextEditingController();
     fetchStores(); // Fetch stores and user ID
+    fetchCategories();
   }
 
   @override
@@ -221,8 +233,10 @@ class _StoresPageState extends State<StoresPage> {
         centerTitle: true,
         iconTheme: IconThemeData(color: Colors.white),
       ),
+
       body: Column(
         children: [
+          SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -251,6 +265,78 @@ class _StoresPageState extends State<StoresPage> {
               ),
             ),
           ),
+
+          SizedBox(height: 10),
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+
+                        selectedCategory = null;
+                        filteredStores = List.from(stores);
+                      });
+                    },
+
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      margin: EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                        color: selectedCategory == null ? Colors.deepOrange : null,
+                        borderRadius: BorderRadius.circular(20),
+                        border: selectedCategory == null
+                            ? null
+                            : Border.all(color: Colors.grey),
+
+                      ),
+                      child: Text(
+                        'All Stores',
+                        style: TextStyle(fontFamily: 'kuro', color: selectedCategory == null ? Colors.white : null),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(width: 10),
+                  ...categories.map((category) {
+                    final isSelected = category == selectedCategory;
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedCategory = isSelected ? null : category;
+                          filteredStores = selectedCategory != null
+                              ? stores.where((store) => store.categories.contains(selectedCategory)).toList()
+                              : List.from(stores);
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        margin: EdgeInsets.only(right: 10),
+                        decoration: BoxDecoration(
+                          color: isSelected ? Colors.deepOrange : null,
+                          borderRadius: BorderRadius.circular(20),
+                          border: isSelected
+                              ? null
+                              : Border.all(color: Colors.grey),
+                        ),
+                        child: Text(
+                          category,
+                          style: TextStyle(fontFamily: 'kuro', color: isSelected ? Colors.white : null),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ],
+              ),
+            ),
+          ),
+
+          SizedBox(height: 20),
 
           Expanded(
             child: ListView.builder(
