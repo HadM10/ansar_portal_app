@@ -52,6 +52,8 @@ class _SignInPageState extends State<SignInPage> {
       if (response.statusCode == 200) {
         // Successful sign-in
         final userId = response.body;
+        // Store authentication state
+        await storage.write(key: 'isSignedIn', value: 'true');
         print(userId);
         // Store user ID securely
         await storage.write(key: 'userId', value: userId)
@@ -101,6 +103,8 @@ class _SignInPageState extends State<SignInPage> {
           },
         );
         if (response.statusCode == 200) {
+          // Store authentication state
+          await storage.write(key: 'isSignedIn', value: 'true');
           final Map<String, dynamic> jsonResponse = json.decode(response.body);
           final userId = jsonResponse['user_id']; // Extract user_id from the response
           print('Google Sign-in User ID: $userId');

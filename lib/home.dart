@@ -1,15 +1,21 @@
 import 'package:ansar_portal_mobile_app/stores.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import 'news.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+  final storage = const FlutterSecureStorage();
 
   Future<void> _signOut(BuildContext context) async {
     // Your sign-out logic here
     final GoogleSignIn googleSignIn = GoogleSignIn();
     try {
       await googleSignIn.signOut();
+      // Remove authentication state
+      await storage.delete(key: 'isSignedIn');
       Navigator.pushReplacementNamed(context, '/');
     } catch (error) {
       print('Error signing out: $error');
@@ -102,7 +108,16 @@ class HomePage extends StatelessWidget {
                   child: _buildIconWithLabel(Icons.store, 'STORES'),
                 ),
                 _buildIconWithLabel(Icons.category, 'CATEGORIES'),
-                _buildIconWithLabel(Icons.article, 'NEWS'),
+                GestureDetector( // Wrap the store icon with GestureDetector
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const NewsPage()), // Navigate to StoresPage
+                    );
+                  },
+                  child: _buildIconWithLabel(Icons.article, 'NEWS'),
+                ),
+
               ],
             ),
           ),
