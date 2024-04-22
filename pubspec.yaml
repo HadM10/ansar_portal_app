@@ -65,6 +65,7 @@ flutter:
     - assets/ansarlogo.png
     - assets/ansarportallogo.png
     - assets/home.jpeg
+    - assets/home-final.jpg
   fonts:
     - family: kuro
       fonts:

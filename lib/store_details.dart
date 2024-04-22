@@ -26,7 +26,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://192.168.1.4/ansar_portal/api/store_details.php?store_id=${widget
+            'http://192.168.72.24/ansar_portal/api/store_details.php?store_id=${widget
                 .storeId}'),
       );
       if (response.statusCode == 200) {
@@ -158,7 +158,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: _buildDetailRow(
                         Icons.phone_android, storeDetails!['phone_number'],
-                        null),
+                        storeDetails!['phone_number']),
                   ),
                   SizedBox(height: 15),
                   Padding(
@@ -178,7 +178,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                       IconButton(
                         icon: Icon(FontAwesomeIcons.facebook),
                         color: Color(0xFF3b5998),
-                        iconSize: 45,// Facebook blue color
+                        iconSize: 40,// Facebook blue color
                         onPressed: () {
                           _launchURL(storeDetails!['facebook_url']);
                         },
@@ -186,7 +186,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                       IconButton(
                         icon: Icon(FontAwesomeIcons.instagram),
                         color: Color(0xFFc32aa3),
-                        iconSize: 45,
+                        iconSize: 40,
                         onPressed: () {
                           _launchURL(storeDetails!['instagram_url']);
                         },
@@ -194,7 +194,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                       IconButton(
                         icon: Icon(FontAwesomeIcons.whatsapp),
                         color: Color(0xFF25d366),
-                        iconSize: 45,
+                        iconSize: 40,
                         onPressed: () {
                           _launchURL(storeDetails!['whatsapp_number']);
                         },
@@ -202,7 +202,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                       IconButton(
                         icon: Icon(Icons.tiktok),
                         color: Color(0xFF000000),
-                        iconSize: 45,
+                        iconSize: 40,
                         onPressed: () {
                           _launchURL(storeDetails!['tiktok_url']);
                         },
@@ -229,9 +229,4 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
       throw 'Could not launch $url';
     }
   }
-
-
-
-
 }
-

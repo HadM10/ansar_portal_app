@@ -1,3 +1,4 @@
+import 'package:ansar_portal_mobile_app/deals.dart';
 import 'package:ansar_portal_mobile_app/stores.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -30,7 +31,7 @@ class HomePage extends StatelessWidget {
           // Background image
           Positioned.fill(
             child: Image.asset(
-              'assets/home.jpeg', // Replace with your actual image path
+              'assets/home-final.jpg', // Replace with your actual image path
               fit: BoxFit.cover,
             ),
           ),
@@ -82,7 +83,16 @@ class HomePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildIconWithLabel(Icons.local_offer, 'DEALS'),
+                GestureDetector( // Wrap the store icon with GestureDetector
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const DealsPage()), // Navigate to StoresPage
+                    );
+                  },
+                  child: _buildIconWithLabel(Icons.local_offer, 'DEALS'),
+                ),
+
                 _buildIconWithLabel(Icons.event, 'EVENTS'),
                 GestureDetector(
                   onTap: () => _signOut(context),
@@ -134,7 +144,7 @@ class HomePage extends StatelessWidget {
           height: 60,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
-            color: Color(0xFFF5DEB3),
+            color: Color(0xFFFFFFFF),
           ),
           child: Icon(icon, size: 40, color: Colors.deepOrange[700]),
         ),
