@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
 class DealsPage extends StatefulWidget {
@@ -49,46 +51,73 @@ class _DealsPageState extends State<DealsPage> {
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: _dealItems.isEmpty
-          ? Center(
-        child: CircularProgressIndicator(),
-
-      )
-          : Expanded(
-        child: ListView.builder(
-          itemCount: _dealItems.length,
-          itemBuilder: (context, index) {
-            final dealItem = _dealItems[index];
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 8.0,
-                horizontal: 16.0,
+          ? Center(child: CircularProgressIndicator())
+          :  Column(
+          children: [
+          SizedBox(height: 20), // Add a SizedBox for spacing
+      Expanded(
+      child: ListView.builder(
+        itemCount: _dealItems.length,
+        itemBuilder: (context, index) {
+          final dealItem = _dealItems[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    AspectRatio(
-                      aspectRatio: 4 / 3,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  AspectRatio(
+                    aspectRatio: 4 / 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.black87, // You can adjust the background color if needed
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                          ),
+                          child: Center(child: Text(
+
+                            dealItem.storeName,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          ),
                         ),
-                        child: Image.network(
-                          dealItem.imageUrl,
-                          fit: BoxFit.cover,
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
+                            child: Image.network(
+                              dealItem.imageUrl,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                    Padding(
+                  ),
+
+                  Padding(
                       padding: EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          Center(child: Text(
                             dealItem.title,
                             style: TextStyle(
                               fontSize: 18,
@@ -96,33 +125,26 @@ class _DealsPageState extends State<DealsPage> {
                               fontFamily: 'kuro',
                             ),
                           ),
+                          ),
                           SizedBox(height: 8),
-                          Text(
+                          Center(child: Text(
                             dealItem.description,
                             style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'kuro',
                             ),
                           ),
+                          ),
                           SizedBox(height: 8),
-                              Text(
-                                'Store: ${dealItem.storeName}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'kuro',
-                                  color: Colors.deepOrange[700],
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
 
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text.rich(
                             TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'Start Date: ',
+                                  text: 'From ',
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontFamily: 'kuro',
@@ -140,7 +162,7 @@ class _DealsPageState extends State<DealsPage> {
                               ],
                             ),
                           ),
-                              ],),
+                          SizedBox(width: 15),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -148,7 +170,7 @@ class _DealsPageState extends State<DealsPage> {
                                 TextSpan(
                                   children: [
                                     TextSpan(
-                                      text: 'End Date: ',
+                                      text: ' To ',
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontFamily: 'kuro',
@@ -167,6 +189,7 @@ class _DealsPageState extends State<DealsPage> {
                                 ),
                               ),
                             ],),
+                        ],),
                         ],
                       ),
                     ),
@@ -176,6 +199,8 @@ class _DealsPageState extends State<DealsPage> {
             );
           },
         ),
+      ),
+      ],
       ),
       backgroundColor: Colors.white,
     );

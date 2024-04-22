@@ -11,11 +11,9 @@ class HomePage extends StatelessWidget {
   final storage = const FlutterSecureStorage();
 
   Future<void> _signOut(BuildContext context) async {
-    // Your sign-out logic here
     final GoogleSignIn googleSignIn = GoogleSignIn();
     try {
       await googleSignIn.signOut();
-      // Remove authentication state
       await storage.delete(key: 'isSignedIn');
       Navigator.pushReplacementNamed(context, '/');
     } catch (error) {
@@ -28,18 +26,15 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Background image
           Positioned.fill(
             child: Image.asset(
-              'assets/home-final.jpg', // Replace with your actual image path
+              'assets/home-final.jpg',
               fit: BoxFit.cover,
             ),
           ),
-          // Black layer
           Container(
-            color: Colors.black.withOpacity(0.2), // Adjust opacity as needed
+            color: Colors.black.withOpacity(0.2),
           ),
-          // Logo and welcome message
           Positioned(
             top: 80,
             left: 0,
@@ -48,7 +43,7 @@ class HomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/ansarportallogo.png', // Replace with your actual logo image path
+                  'assets/ansarportallogo.png',
                   height: 200,
                 ),
                 const SizedBox(height: 50),
@@ -59,9 +54,9 @@ class HomePage extends StatelessWidget {
                     fontFamily: 'Kuro',
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
-                    // Add any other styles you want
                   ),
                 ),
+                const SizedBox(height: 10),
                 const Text(
                   'TO ANSAR PORTAL',
                   style: TextStyle(
@@ -69,13 +64,11 @@ class HomePage extends StatelessWidget {
                     fontFamily: 'Kuro',
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
-                    // Add any other styles you want
                   ),
                 ),
               ],
             ),
           ),
-          // Icons below (arranged in rows of three)
           Positioned(
             bottom: 50,
             left: 20,
@@ -83,21 +76,18 @@ class HomePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                GestureDetector( // Wrap the store icon with GestureDetector
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const DealsPage()), // Navigate to StoresPage
-                    );
-                  },
-                  child: _buildIconWithLabel(Icons.local_offer, 'DEALS'),
-                ),
-
-                _buildIconWithLabel(Icons.event, 'EVENTS'),
-                GestureDetector(
-                  onTap: () => _signOut(context),
-                  child: _buildIconWithLabel(Icons.logout, 'LOGOUT'),
-                ),
+                _buildIconWithLabel(Icons.local_offer, 'DEALS', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const DealsPage()),
+                  );
+                }),
+                _buildIconWithLabel(Icons.event, 'EVENTS', () {
+                  // Add navigation or action for EVENTS here
+                }),
+                _buildIconWithLabel(Icons.logout, 'LOGOUT', () {
+                  _signOut(context);
+                }),
               ],
             ),
           ),
@@ -108,26 +98,21 @@ class HomePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                GestureDetector( // Wrap the store icon with GestureDetector
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const StoresPage()), // Navigate to StoresPage
-                    );
-                  },
-                  child: _buildIconWithLabel(Icons.store, 'STORES'),
-                ),
-                _buildIconWithLabel(Icons.category, 'CATEGORIES'),
-                GestureDetector( // Wrap the store icon with GestureDetector
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const NewsPage()), // Navigate to StoresPage
-                    );
-                  },
-                  child: _buildIconWithLabel(Icons.article, 'NEWS'),
-                ),
-
+                _buildIconWithLabel(Icons.store, 'STORES', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const StoresPage()),
+                  );
+                }),
+                _buildIconWithLabel(Icons.category, 'CATEGORIES', () {
+                  // Add navigation or action for CATEGORIES here
+                }),
+                _buildIconWithLabel(Icons.article, 'NEWS', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const NewsPage()),
+                  );
+                }),
               ],
             ),
           ),
@@ -136,24 +121,28 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildIconWithLabel(IconData icon, String label) {
-    return Column(
-      children: [
-        Container(
-          width: 60,
-          height: 60,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: Color(0xFFFFFFFF),
+  Widget _buildIconWithLabel(IconData icon, String label, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(30),
+      child: Column(
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color(0xFFFFFFFF),
+            ),
+            child: Icon(icon, size: 40, color: Colors.deepOrange[700]),
           ),
-          child: Icon(icon, size: 40, color: Colors.deepOrange[700]),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(color: Colors.white),
-        ),
-      ],
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: const TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
     );
   }
 }
