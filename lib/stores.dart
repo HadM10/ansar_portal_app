@@ -53,7 +53,7 @@ class _StoresPageState extends State<StoresPage> {
 
   Future<void> fetchStores() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.72.24/ansar_portal/api/view_stores.php'));
+      final response = await http.get(Uri.parse('http://192.168.43.178/ansar_portal/api/view_stores.php'));
       if (response.statusCode == 200) {
         final List<dynamic> jsonResponse = json.decode(response.body);
         setState(() {
@@ -72,7 +72,7 @@ class _StoresPageState extends State<StoresPage> {
 
   Future<void> fetchCategories() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.72.24/ansar_portal/api/view_categories.php'));
+      final response = await http.get(Uri.parse('http://192.168.43.178/ansar_portal/api/view_categories.php'));
       if (response.statusCode == 200) {
         final List<dynamic> jsonResponse = json.decode(response.body);
         setState(() {
@@ -97,7 +97,7 @@ class _StoresPageState extends State<StoresPage> {
     try {
       // Make POST request to fetch user likes with user ID from session
       final response = await http.post(
-        Uri.parse('http://192.168.72.24/ansar_portal/api/fetch_user_likes.php'),
+        Uri.parse('http://192.168.43.178/ansar_portal/api/fetch_user_likes.php'),
         body: {'user_id': userId!},
       );
       if (response.statusCode == 200) {
@@ -128,7 +128,7 @@ class _StoresPageState extends State<StoresPage> {
     try {
       // Make POST request to like/unlike a store with user ID from session
       final response = await http.post(
-        Uri.parse('http://192.168.72.24/ansar_portal/api/like_store.php'),
+        Uri.parse('http://192.168.43.178/ansar_portal/api/like_store.php'),
         body: {
           'user_id': userId!,
           'store_id': store.id.toString(),
@@ -176,7 +176,7 @@ class _StoresPageState extends State<StoresPage> {
         // Make GET request to search stores
         http.Response response = await http.get(
           Uri.parse(
-              'http://192.168.72.24/ansar_portal/api/search_stores.php?query=$query'),
+              'http://192.168.43.178/ansar_portal/api/search_stores.php?query=$query'),
         );
         if (response.statusCode == 200) {
           final List<dynamic> jsonResponse = json.decode(response.body);

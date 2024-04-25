@@ -26,7 +26,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://192.168.72.24/ansar_portal/api/store_details.php?store_id=${widget
+            'http://192.168.43.178/ansar_portal/api/store_details.php?store_id=${widget
                 .storeId}'),
       );
       if (response.statusCode == 200) {

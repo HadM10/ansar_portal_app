@@ -20,7 +20,7 @@ class _NewsPageState extends State<NewsPage> {
 
   Future<void> _fetchNews() async {
     final response = await http.get(
-        Uri.parse('http://192.168.1.4/ansar_portal/api/view_news.php'));
+        Uri.parse('http://192.168.43.178/ansar_portal/api/view_news.php'));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       setState(() {

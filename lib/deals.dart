@@ -22,7 +22,7 @@ class _DealsPageState extends State<DealsPage> {
 
   Future<void> _fetchDeals() async {
     final response = await http.get(
-      Uri.parse('http://192.168.72.24/ansar_portal/api/view_offers.php'),
+      Uri.parse('http://192.168.43.178/ansar_portal/api/view_offers.php'),
     );
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
