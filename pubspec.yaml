@@ -69,6 +69,10 @@ flutter:
     - assets/ansarportallogo.png
     - assets/home.jpeg
     - assets/home-final.jpg
+    - assets/whatsapp.jpg
+    - assets/instagram.jpg
+    - assets/facebook.jpg
+    - assets/tiktok.webp
   fonts:
     - family: kuro
       fonts:

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import 'socials.dart';
 import 'deals.dart';
 import 'map.dart';
 import 'news.dart';
@@ -45,11 +48,10 @@ class HomePage extends StatelessWidget {
             top: 45,
             left: 10,
             child: IconButton(
-              icon: Icon(Icons.share, size: 35,),
-              color: Colors.white,
+                icon: Icon(Icons.share, size: 35,),
+                color: Colors.white,
                 onPressed: () {
-                  // Implement share app functionality
-                  Share.share('Check out this awesome app!',);
+                  Share.share('Check out this awesome app!');
                 }
             ),
           ),
@@ -57,33 +59,48 @@ class HomePage extends StatelessWidget {
           Positioned(
             top: 40,
             right: 10,
-            child: PopupMenuButton(
+            child: PopupMenuButton<int>(
               icon: Icon(Icons.menu, size: 45, color: Colors.white,),
-              offset: Offset(0, 55),
-              itemBuilder: (BuildContext context) {
-                return [
-                  PopupMenuItem(
-                    child: ListTile(
-                      title: Text('About Us', style: TextStyle(color: Colors.black, fontFamily: 'kuro')),
-                      onTap: () {
-                        // Navigate to About Us page
-                      },
-                    ),
+              offset: Offset(0, 60),
+              itemBuilder: (BuildContext context) => [
+                PopupMenuItem(
+                  child: ListTile(
+                    leading: Icon(Icons.info, color: Colors.black87),
+                    title: Text('About Us', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
+                    onTap: () {
+                      // Navigate to About Us page
+                    },
                   ),
-                  PopupMenuItem(
-                    child: ListTile(
-                      title: Text('Contact Us', style: TextStyle(color: Colors.black, fontFamily: 'kuro')),
-                      onTap: () {
-                        // Navigate to Contact Us page
-                      },
-                    ),
+                ),
+                PopupMenuItem(
+                  child: ListTile(
+                    leading: Icon(Icons.email, color: Colors.black87),
+                    title: Text('Contact Us', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
+                    onTap: () {
+                      final Uri emailLaunchUri = Uri(
+                        scheme: 'mailto',
+                        path: 'hadmak20@gmail.com',  // Replace with your email address
+                        query: encodeQueryParameters(<String, String>{
+                          'subject': 'Inquiry from MyApp', // Optional: Set the subject
+                        }),
+                      );
+                      launchUrl(emailLaunchUri);
+                    },
                   ),
-                  // Add more PopupMenuItems for additional options
-                ];
-              },
+                ),
+                PopupMenuItem(
+                  child: ListTile(
+                    leading: Icon(Icons.logout, color: Colors.black87),
+                    title: Text('Logout', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
+                    onTap: () {
+                      _signOut(context);
+                    },
+                  ),
+                ),
+                // Add more PopupMenuItems for additional options
+              ],
             ),
           ),
-
           // Center Content
           Positioned(
             top: 50,
@@ -127,17 +144,23 @@ class HomePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildIconWithLabel(Icons.local_offer, 'DEALS', () {
+                _buildIconWithLabel(Icons.article, 'NEWS', () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const DealsPage()),
+                    MaterialPageRoute(builder: (context) => const NewsPage()),
                   );
                 }),
-                _buildIconWithLabel(Icons.event, 'EVENTS', () {
-                  // Add navigation or action for EVENTS here
+                _buildIconWithLabel(Icons.map, 'MAP', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MapScreen()),
+                  );
                 }),
-                _buildIconWithLabel(Icons.logout, 'LOGOUT', () {
-                  _signOut(context);
+                _buildIconWithLabel(Icons.people, 'SOCIALS', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SocialsPage()),
+                  );
                 }),
               ],
             ),
@@ -156,16 +179,12 @@ class HomePage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const StoresPage()),
                   );
                 }),
-                _buildIconWithLabel(Icons.map, 'MAP', () {
+                _buildIconWithLabel(FontAwesomeIcons.buildingColumns, 'TOURISM', () {
+                }, iconSize: 32),
+                _buildIconWithLabel(Icons.local_offer, 'DEALS', () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MapScreen()),
-                  );
-                }),
-                _buildIconWithLabel(Icons.article, 'NEWS', () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const NewsPage()),
+                    MaterialPageRoute(builder: (context) => const DealsPage()),
                   );
                 }),
               ],
@@ -176,7 +195,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildIconWithLabel(IconData icon, String label, VoidCallback onTap) {
+  Widget _buildIconWithLabel(
+      IconData icon,
+      String label,
+      VoidCallback onTap, {
+        double iconSize = 40, // Default icon size
+      }) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(30),
@@ -185,19 +209,25 @@ class HomePage extends StatelessWidget {
           Container(
             width: 60,
             height: 60,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Color(0xFFFFFFFF),
             ),
-            child: Icon(icon, size: 40, color: Colors.deepOrange[700]),
+            child: Icon(icon, size: iconSize, color: Colors.deepOrange[700]),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
             label,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white),
           ),
         ],
       ),
     );
+  }
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
   }
 }

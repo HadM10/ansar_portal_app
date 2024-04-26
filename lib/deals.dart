@@ -76,7 +76,7 @@ class _DealsPageState extends State<DealsPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                           width: double.infinity,
                           decoration: BoxDecoration(
                             color: Colors.black87, // You can adjust the background color if needed
@@ -92,16 +92,13 @@ class _DealsPageState extends State<DealsPage> {
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'kuro'
                             ),
                           ),
                           ),
                         ),
                         Expanded(
                           child: ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
-                            ),
                             child: Image.network(
                               dealItem.imageUrl,
                               fit: BoxFit.cover,
@@ -144,7 +141,7 @@ class _DealsPageState extends State<DealsPage> {
                             TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'From ',
+                                  text: 'From  ',
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontFamily: 'kuro',
@@ -170,7 +167,7 @@ class _DealsPageState extends State<DealsPage> {
                                 TextSpan(
                                   children: [
                                     TextSpan(
-                                      text: ' To ',
+                                      text: ' To  ',
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontFamily: 'kuro',

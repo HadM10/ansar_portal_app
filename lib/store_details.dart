@@ -80,7 +80,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
     );
   }
 
-  Widget _buildDetailRow(IconData icon, String value, String? url) {
+  Widget _buildDetailRow(IconData icon, String value, String? url, String? phone) {
     return Row(
       children: [
         Icon(icon, size: 40),
@@ -90,6 +90,9 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
             // Add code to open the corresponding social media link
             if (url != null && url.isNotEmpty) {
               _launchURL(url);
+            }
+            else if (phone != null) {
+              _launchPhone(phone); // Call phone number if available
             }
           },
           child: Text(
@@ -151,15 +154,19 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: _buildDetailRow(Icons.store,
-                        storeDetails!['category_name'], null),
+                        storeDetails!['category_name'], null, null),
                   ),
                   SizedBox(height: 15),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: _buildDetailRow(
-                        Icons.phone_android, storeDetails!['phone_number'],
-                        storeDetails!['phone_number']),
-                  ),
+                      Icons.phone_android,
+                      storeDetails!['phone_number'],
+                      null,
+                      storeDetails!['phone_number'],
+                      ),
+                    ),
+
                   SizedBox(height: 15),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
@@ -168,7 +175,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                         // Add code to open map with store location
                       },
                       child: _buildDetailRow(
-                          Icons.location_on, 'Store Location', null),
+                          Icons.location_on, 'Store Location', null, null),
                     ),
                   ),
                   SizedBox(height: 50),
@@ -227,6 +234,16 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
       await launchUrl(uri);
     } else {
       throw 'Could not launch $url';
+    }
+  }
+
+  // Function to launch phone app with the provided number
+  void _launchPhone(String phoneNumber) async {
+    final Uri phoneLaunchUri = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunch(phoneLaunchUri.toString())) {
+      await launch(phoneLaunchUri.toString());
+    } else {
+      throw 'Could not launch $phoneLaunchUri';
     }
   }
 }
