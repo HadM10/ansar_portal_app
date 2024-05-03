@@ -241,6 +241,7 @@ class _StoresPageState extends State<StoresPage> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _searchController,
+              cursorColor: Colors.deepOrange[700],
               style: TextStyle(fontFamily: 'kuro'),
               onChanged: (value) {
                 setState(() {
@@ -262,6 +263,9 @@ class _StoresPageState extends State<StoresPage> {
                   },
                 ),
                 border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.deepOrange[700]!), // Set border color to deepOrange[700]
+                ),
               ),
             ),
           ),

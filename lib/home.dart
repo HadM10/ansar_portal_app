@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
     try {
       await googleSignIn.signOut();
       await storage.delete(key: 'isSignedIn');
-      Navigator.pushReplacementNamed(context, '/');
+      Navigator.of(context).pushReplacementNamed('/');  // Ensure this route is defined in your route settings
     } catch (error) {
       print('Error signing out: $error');
     }
@@ -32,77 +32,62 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Background Image
           Positioned.fill(
             child: Image.asset(
               'assets/home-final.jpg',
               fit: BoxFit.cover,
             ),
           ),
-          // Overlay
           Container(
             color: Colors.black.withOpacity(0.2),
           ),
-          // Share App Button
           Positioned(
             top: 45,
             left: 10,
             child: IconButton(
-                icon: Icon(Icons.share, size: 35,),
+                icon: Icon(Icons.share, size: 35),
                 color: Colors.white,
                 onPressed: () {
                   Share.share('Check out this awesome app!');
                 }
             ),
           ),
-          // Hamburger Menu Button
           Positioned(
             top: 40,
             right: 10,
             child: PopupMenuButton<int>(
-              icon: Icon(Icons.menu, size: 45, color: Colors.white,),
+              icon: Icon(Icons.menu, size: 45, color: Colors.white),
               offset: Offset(0, 60),
               itemBuilder: (BuildContext context) => [
-                PopupMenuItem(
+                PopupMenuItem<int>(
+                  value: 1,
                   child: ListTile(
                     leading: Icon(Icons.info, color: Colors.black87),
                     title: Text('About Us', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
-                    onTap: () {
-                      // Navigate to About Us page
-                    },
                   ),
                 ),
-                PopupMenuItem(
+                PopupMenuItem<int>(
+                  value: 2,
                   child: ListTile(
                     leading: Icon(Icons.email, color: Colors.black87),
                     title: Text('Contact Us', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
-                    onTap: () {
-                      final Uri emailLaunchUri = Uri(
-                        scheme: 'mailto',
-                        path: 'hadmak20@gmail.com',  // Replace with your email address
-                        query: encodeQueryParameters(<String, String>{
-                          'subject': 'Inquiry from MyApp', // Optional: Set the subject
-                        }),
-                      );
-                      launchUrl(emailLaunchUri);
-                    },
                   ),
                 ),
-                PopupMenuItem(
+                PopupMenuItem<int>(
+                  value: 3,
                   child: ListTile(
                     leading: Icon(Icons.logout, color: Colors.black87),
                     title: Text('Logout', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
                     onTap: () {
+                      Navigator.pop(context); // Close the menu before logging out
                       _signOut(context);
                     },
                   ),
                 ),
-                // Add more PopupMenuItems for additional options
               ],
             ),
           ),
-          // Center Content
-          Positioned(
+        Positioned(
             top: 50,
             left: 0,
             right: 0,

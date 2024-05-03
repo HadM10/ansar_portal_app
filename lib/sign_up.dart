@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'bouncing_button.dart';
@@ -5,7 +7,6 @@ import 'sign_in.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key});
-
 
   @override
   _SignUpPageState createState() => _SignUpPageState();
@@ -17,10 +18,13 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  String? _usernameError;
+  String? _emailError;
+
   Future<void> signUp() async {
     if (_formKey.currentState!.validate()) {
       final response = await http.post(
-        Uri.parse('http://192.168.1.5/ansar_portal/api/signup.php'),
+        Uri.parse('http://192.168.43.178/ansar_portal/api/signup.php'),
         body: {
           'username': usernameController.text,
           'email': emailController.text,
@@ -28,7 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         // Sign up successful, navigate to sign in screen
         Navigator.pushReplacement(
           context,
@@ -36,9 +40,22 @@ class _SignUpPageState extends State<SignUpPage> {
         );
       } else {
         // Sign up failed, show error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Sign up failed. Please try again.')),
-        );
+        final body = json.decode(response.body);
+        setState(() {
+          if (body['error'].toString().contains('Username')) {
+            _usernameError = body['error'];
+            _emailError = null;
+          } else if (body['error'].toString().contains('Email')) {
+            _emailError = body['error'];
+            _usernameError = null;
+          } else {
+            _usernameError = null;
+            _emailError = null;
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Sign up failed. Please try again.')),
+            );
+          }
+        });
       }
     }
   }
@@ -46,13 +63,11 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Stack(
         children: [
           // Background Image
           Image.asset(
             'assets/signuppage.jpeg',
-            // Replace 'background_image.jpg' with your actual image asset path
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
@@ -66,14 +81,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 30),
-
                     // Your app logo
                     Image.asset(
                       'assets/ansarportallogo.png',
-                      // Replace 'your_app_logo.png' with your actual logo image asset path
                       height: 200,
                     ),
-
                     TextFormField(
                       controller: usernameController,
                       cursorColor: Colors.white,
@@ -94,15 +106,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                         ),
-                        errorStyle: TextStyle(
-                          color: Colors.red,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black.withOpacity(0.5),
-                              blurRadius: 2,
-                            )
-                          ],
-                        ),
+                        errorText: _usernameError,
                       ),
                       style: TextStyle(
                         color: Colors.white,
@@ -110,26 +114,21 @@ class _SignUpPageState extends State<SignUpPage> {
                           Shadow(
                             color: Colors.black.withOpacity(1),
                             blurRadius: 5,
-                          )
+                          ),
                         ],
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your username';
                         }
+                        else if (value.length < 8) {
+                          return 'Username must be at least 4 characters';
+                        }
                         return null;
                       },
                     ),
-
                     const SizedBox(height: 20),
-
-                    Theme(
-                      data: Theme.of(context).copyWith(
-                        textSelectionTheme: const TextSelectionThemeData(
-                          selectionHandleColor: Colors.red,
-                        ),
-                      ),
-                      child: TextFormField(
+                    TextFormField(
                       controller: emailController,
                       cursorColor: Colors.white,
                       decoration: InputDecoration(
@@ -141,7 +140,6 @@ class _SignUpPageState extends State<SignUpPage> {
                               color: Colors.black.withOpacity(1),
                               blurRadius: 5,
                             )
-
                           ],
                         ),
                         enabledBorder: const UnderlineInputBorder(
@@ -150,15 +148,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                         ),
-                        errorStyle: TextStyle(
-                          color: Colors.red,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black.withOpacity(0.5),
-                              blurRadius: 2,
-                            )
-                          ],
-                        ),
+                        errorText: _emailError,
                       ),
                       style: TextStyle(
                         color: Colors.white,
@@ -166,11 +156,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           Shadow(
                             color: Colors.black.withOpacity(1),
                             blurRadius: 5,
-                          )
+                          ),
                         ],
-
                       ),
-
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your email';
@@ -179,7 +167,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         }
                         return null;
                       },
-                    ),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
@@ -196,13 +183,11 @@ class _SignUpPageState extends State<SignUpPage> {
                             )
                           ],
                         ),
-
                         enabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                         ),
                         focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
-
                         ),
                         errorStyle: TextStyle(
                           color: Colors.red,
@@ -223,7 +208,6 @@ class _SignUpPageState extends State<SignUpPage> {
                           )
                         ],
                       ),
-
                       obscureText: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -241,11 +225,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       },
                     ),
                     const SizedBox(height: 20),
-
                     SignUpButton(onPressed: signUp),
-
                     const SizedBox(height: 20),
-
                     // Sign In button
                     TextButton(
                       onPressed: () {
@@ -253,12 +234,15 @@ class _SignUpPageState extends State<SignUpPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const SignInPage()),
+                            builder: (context) => const SignInPage(),
+                          ),
                         );
                       },
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 10.0),
+                          horizontal: 20.0,
+                          vertical: 10.0,
+                        ),
                         foregroundColor: Colors.white, // text color
                         textStyle: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -275,8 +259,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.login,
-                              color: Colors.white), // example icon
+                          Icon(Icons.login, color: Colors.white), // example icon
                           SizedBox(width: 10),
                           Text("Already have an account? Sign In"),
                         ],

@@ -73,6 +73,10 @@ flutter:
     - assets/instagram.jpg
     - assets/facebook.jpg
     - assets/tiktok.webp
+    - assets/instagram.png
+    - assets/tiktok.png
+    - assets/whatsapp.png
+    - assets/facebook.png
   fonts:
     - family: kuro
       fonts:

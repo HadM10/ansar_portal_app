@@ -178,12 +178,12 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                           Icons.location_on, 'Store Location', null, null),
                     ),
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 40),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       IconButton(
-                        icon: Icon(FontAwesomeIcons.facebook),
+                        icon: Image.asset('assets/facebook.png', width: 40, height: 40,),
                         color: Color(0xFF3b5998),
                         iconSize: 40,// Facebook blue color
                         onPressed: () {
@@ -191,7 +191,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                         },
                       ),
                       IconButton(
-                        icon: Icon(FontAwesomeIcons.instagram),
+                        icon: Image.asset('assets/instagram.png', width: 48, height: 48,),
                         color: Color(0xFFc32aa3),
                         iconSize: 40,
                         onPressed: () {
@@ -199,7 +199,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                         },
                       ),
                       IconButton(
-                        icon: Icon(FontAwesomeIcons.whatsapp),
+                        icon: Image.asset('assets/whatsapp.png', width: 42, height: 42,),
                         color: Color(0xFF25d366),
                         iconSize: 40,
                         onPressed: () {
@@ -207,7 +207,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.tiktok),
+                        icon: Image.asset('assets/tiktok.png', width: 42, height: 42,),
                         color: Color(0xFF000000),
                         iconSize: 40,
                         onPressed: () {
