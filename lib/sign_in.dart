@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:ansar_portal_mobile_app/sign_up.dart';
+import 'package:AnsarPortal/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

@@ -1,3 +1,4 @@
+import 'package:AnsarPortal/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -21,7 +22,10 @@ class HomePage extends StatelessWidget {
     try {
       await googleSignIn.signOut();
       await storage.delete(key: 'isSignedIn');
-      Navigator.of(context).pushReplacementNamed('/');  // Ensure this route is defined in your route settings
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SignInPage()),
+      );  // Ensure this route is defined in your route settings
     } catch (error) {
       print('Error signing out: $error');
     }
@@ -71,6 +75,16 @@ class HomePage extends StatelessWidget {
                   child: ListTile(
                     leading: Icon(Icons.email, color: Colors.black87),
                     title: Text('Contact Us', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
+                    onTap: () {
+                      final Uri emailLaunchUri = Uri(
+                        scheme: 'mailto',
+                        path: 'hadmak20@gmail.com',  // Replace with your email address
+                        query: encodeQueryParameters(<String, String>{
+                          'subject': 'Inquiry from MyApp', // Optional: Set the subject
+                        }),
+                      );
+                      launchUrl(emailLaunchUri);
+                    },
                   ),
                 ),
                 PopupMenuItem<int>(
