@@ -1,4 +1,5 @@
 import 'package:AnsarPortal/sign_in.dart';
+import 'package:AnsarPortal/tourism.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -179,6 +180,10 @@ class HomePage extends StatelessWidget {
                   );
                 }),
                 _buildIconWithLabel(FontAwesomeIcons.buildingColumns, 'TOURISM', () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) =>TourismPage()),
+                  );
                 }, iconSize: 32),
                 _buildIconWithLabel(Icons.local_offer, 'DEALS', () {
                   Navigator.push(

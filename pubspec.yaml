@@ -38,6 +38,7 @@ dependencies:
   google_maps_flutter: ^2.6.1
   permission_handler: ^10.0.0
   share_plus: ^2.0.4
+  carousel_slider: ^4.0.0
 
 
 
@@ -77,6 +78,9 @@ flutter:
     - assets/tiktok.png
     - assets/whatsapp.png
     - assets/facebook.png
+    - assets/ansar1.png
+    - assets/ansar2.png
+    - assets/ansar3.png
   fonts:
     - family: kuro
       fonts:
