@@ -8,10 +8,11 @@ class Store {
   final int id;
   final String name;
   final String description;
-  final List<String> categories; // Added categories property
+  final List<String> categories;
   int totalLikes;
   final List<String> images;
   bool isLiked;
+  final bool archived; // Add archived property
 
   Store({
     required this.id,
@@ -21,6 +22,7 @@ class Store {
     required this.totalLikes,
     required this.images,
     this.isLiked = false,
+    required this.archived, // Initialize archived property
   });
 
   factory Store.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,8 @@ class Store {
       categories: List<String>.from(json['categories'] ?? []),
       totalLikes: int.tryParse(json['total_likes'].toString()) ?? 0,
       images: List<String>.from(json['images'] ?? []),
+      isLiked: false, // Initialize isLiked property
+      archived: json['archived'] == true, // Parse archived property from JSON
     );
   }
 }
@@ -57,7 +61,14 @@ class _StoresPageState extends State<StoresPage> {
       if (response.statusCode == 200) {
         final List<dynamic> jsonResponse = json.decode(response.body);
         setState(() {
-          stores = jsonResponse.map((store) => Store.fromJson(store)).toList();
+          // Filter out archived stores
+          stores = jsonResponse.map((store) {
+            final parsedStore = Store.fromJson(store);
+            print('Store ${parsedStore.id}: archived=${parsedStore.archived}');
+            return parsedStore;
+          })
+              .where((store) => !store.archived) // Exclude archived stores
+              .toList();
           filteredStores = List.from(stores);
         });
         await getUserId();
@@ -69,6 +80,8 @@ class _StoresPageState extends State<StoresPage> {
       print('Error fetching stores: $error');
     }
   }
+
+
 
   Future<void> fetchCategories() async {
     try {
