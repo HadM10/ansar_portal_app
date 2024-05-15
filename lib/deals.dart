@@ -22,7 +22,7 @@ class _DealsPageState extends State<DealsPage> {
 
   Future<void> _fetchDeals() async {
     final response = await http.get(
-      Uri.parse('http://192.168.43.178/ansar_portal/api/view_offers.php'),
+      Uri.parse('https://ansarportal-deaa9ded50c7.herokuapp.com/api/view_offers.php'),
     );
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
@@ -51,7 +51,11 @@ class _DealsPageState extends State<DealsPage> {
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: _dealItems.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange),
+        ),
+      )
           :  Column(
           children: [
           SizedBox(height: 20), // Add a SizedBox for spacing
@@ -70,33 +74,34 @@ class _DealsPageState extends State<DealsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.black87, // You can adjust the background color if needed
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        dealItem.storeName,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'kuro',
+                        ),
+                      ),
+                    ),
+                  ),
                   AspectRatio(
                     aspectRatio: 4 / 3,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.black87, // You can adjust the background color if needed
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                            ),
-                          ),
-                          child: Center(child: Text(
 
-                            dealItem.storeName,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'kuro'
-                            ),
-                          ),
-                          ),
-                        ),
                         Expanded(
                           child: ClipRRect(
                             child: Image.network(

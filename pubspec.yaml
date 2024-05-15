@@ -81,6 +81,11 @@ flutter:
     - assets/ansar1.png
     - assets/ansar2.png
     - assets/ansar3.png
+    - assets/makam.jpg
+    - assets/mousastadium.jpg
+    - assets/phoenix.jpg
+    - assets/sportcity.jpg
+    - assets/stadium.jpg
   fonts:
     - family: kuro
       fonts:

@@ -26,7 +26,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://192.168.43.178/ansar_portal/api/store_details.php?store_id=${widget
+            'https://ansarportal-deaa9ded50c7.herokuapp.com/api/store_details.php?store_id=${widget
                 .storeId}'),
       );
       if (response.statusCode == 200) {
@@ -175,7 +175,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                         // Add code to open map with store location
                       },
                       child: _buildDetailRow(
-                          Icons.location_on, 'Store Location', null, null),
+                          Icons.location_on,  storeDetails!['location'], null, null),
                     ),
                   ),
                   SizedBox(height: 40),
@@ -223,8 +223,12 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
         ),
       )
           : Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange),
+        ),
       ),
+
+
     );
   }
 

@@ -79,7 +79,7 @@ class HomePage extends StatelessWidget {
                     onTap: () {
                       final Uri emailLaunchUri = Uri(
                         scheme: 'mailto',
-                        path: 'hadmak20@gmail.com',  // Replace with your email address
+                        path: 'hmcodeshinobi@gmail.com',  // Replace with your email address
                         query: encodeQueryParameters(<String, String>{
                           'subject': 'Inquiry from MyApp', // Optional: Set the subject
                         }),

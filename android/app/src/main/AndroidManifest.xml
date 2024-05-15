@@ -4,7 +4,7 @@
     <application
         android:label="Ansar Portal"
         android:name="${applicationName}"
-        android:icon="@mipmap/ansarlogo">
+        android:icon="@mipmap/ansarhomelogo">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAZsA7IxhpOx_T6qSh9JrCtdvQYsMtywXg"/>

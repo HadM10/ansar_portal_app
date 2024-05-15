@@ -20,7 +20,7 @@ class _NewsPageState extends State<NewsPage> {
 
   Future<void> _fetchNews() async {
     final response = await http.get(
-        Uri.parse('http://192.168.43.178/ansar_portal/api/view_news.php'));
+        Uri.parse('https://ansarportal-deaa9ded50c7.herokuapp.com/api/view_news.php'));
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
       setState(() {
@@ -48,7 +48,13 @@ class _NewsPageState extends State<NewsPage> {
         iconTheme: IconThemeData(color: Colors.white),
       ),
 
-    body: Column(
+    body: _newsItems.isEmpty
+        ? Center(
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange),
+      ),
+    )
+        :  Column(
     children: [
     SizedBox(height: 20), // Add a SizedBox for spacing
     Expanded(

@@ -24,7 +24,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Future<void> signUp() async {
     if (_formKey.currentState!.validate()) {
       final response = await http.post(
-        Uri.parse('http://192.168.43.178/ansar_portal/api/signup.php'),
+        Uri.parse('https://ansarportal-deaa9ded50c7.herokuapp.com/api/signup.php'),
         body: {
           'username': usernameController.text,
           'email': emailController.text,

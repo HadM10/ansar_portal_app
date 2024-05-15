@@ -71,14 +71,20 @@ class TourismPage extends StatelessWidget {
                 ),
                 SizedBox(height: 20.0),
                 // Replace these cards with your own
-                _buildPlaceCard('Place 1', 'Description 1',
-                    'https://via.placeholder.com/150'),
+                _buildPlaceCard('ملتقى الفنيق', 'Description 1',
+                    'assets/phoenix.jpg'),
                 SizedBox(height: 20.0),
-                _buildPlaceCard('Place 2', 'Description 2',
-                    'https://via.placeholder.com/150'),
+                _buildPlaceCard('المدينة الرياضية', 'Description 2',
+                    'assets/sportcity.jpg'),
                 SizedBox(height: 20.0),
-                _buildPlaceCard('Place 3', 'Description 3',
-                    'https://via.placeholder.com/150'),
+                _buildPlaceCard('ملعب القائد السيد موسى', 'Description 3',
+                    'assets/mousastadium.jpg'),
+                SizedBox(height: 20.0),
+                _buildPlaceCard('ملعب انصار الشعبي ', 'Description 3',
+                    'assets/stadium.jpg'),
+                SizedBox(height: 20.0),
+                _buildPlaceCard('مقام ابي ذر الغفاري', 'Description 3',
+                    'assets/makam.jpg'),
               ],
             ),
           ),
@@ -96,9 +102,8 @@ class TourismPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Image.network(
-            imageUrl,
-            fit: BoxFit.cover,
+          Image.asset(
+            imageUrl
           ),
           Padding(
             padding: EdgeInsets.all(8.0),
