@@ -46,7 +46,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
     return Stack(
       children: [
         Container(
-          height: 300, // Adjust the height as needed
+          height: 350, // Adjust the height as needed
           child: PageView.builder(
             itemCount: storeDetails!['images'].length,
             itemBuilder: (context, index) {
@@ -121,7 +121,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                   Container(
                     width: double.infinity,
                     color: Colors.grey.shade900,
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                     child: Text(
                       storeDetails!['store_name'],
                       style: TextStyle(
@@ -142,7 +142,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                           storeDetails!['description'],
                           style: TextStyle(fontSize: 18, fontFamily: 'kuro'),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 15),
                         Container(
                           height: 1,
                           color: Colors.grey.shade900,

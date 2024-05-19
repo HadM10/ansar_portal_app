@@ -247,13 +247,7 @@ class _StoresPageState extends State<StoresPage> {
         iconTheme: IconThemeData(color: Colors.white),
       ),
 
-      body: filteredStores.isEmpty
-          ? Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange),
-        ),
-      )
-          :   Column(
+      body:Column(
         children: [
           SizedBox(height: 10),
           Padding(
@@ -268,6 +262,7 @@ class _StoresPageState extends State<StoresPage> {
                 });
               },
               decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                 hintStyle: TextStyle(fontFamily: 'kuro'),
                 hintText: 'Search...',
                 prefixIcon: Icon(Icons.search),
@@ -289,7 +284,7 @@ class _StoresPageState extends State<StoresPage> {
             ),
           ),
 
-          SizedBox(height: 10),
+          SizedBox(height: 5),
 
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -308,8 +303,8 @@ class _StoresPageState extends State<StoresPage> {
                     },
 
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      margin: EdgeInsets.only(right: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      margin: EdgeInsets.only(right: 5),
                       decoration: BoxDecoration(
                         color: selectedCategory == null ? Colors.deepOrange : null,
                         borderRadius: BorderRadius.circular(20),
@@ -319,13 +314,13 @@ class _StoresPageState extends State<StoresPage> {
 
                       ),
                       child: Text(
-                        'All Stores',
+                        'All Stores/ متاجر',
                         style: TextStyle(fontFamily: 'kuro', color: selectedCategory == null ? Colors.white : null),
                       ),
                     ),
                   ),
 
-                  SizedBox(width: 10),
+                  SizedBox(width: 5),
                   ...categories.map((category) {
                     final isSelected = category == selectedCategory;
                     return GestureDetector(
@@ -338,7 +333,7 @@ class _StoresPageState extends State<StoresPage> {
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                         margin: EdgeInsets.only(right: 10),
                         decoration: BoxDecoration(
                           color: isSelected ? Colors.deepOrange : null,
@@ -359,9 +354,34 @@ class _StoresPageState extends State<StoresPage> {
             ),
           ),
 
-          SizedBox(height: 20),
+          SizedBox(height: 10),
 
-          Expanded(
+          filteredStores.isEmpty
+              ? Padding(
+            padding: EdgeInsets.only(top: 100.0),
+            child: Column(
+              children: [
+                Text(
+                  "No available stores",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'kuro',
+                  ),
+                ),
+                const SizedBox(height: 10,),
+                Text(
+                  "لا يوجد متاجر",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'kuro',
+                  ),
+                ),
+              ],
+            ),
+          )
+              :   Expanded(
             child: ListView.builder(
               itemCount: filteredStores.length,
               itemBuilder: (context, index) {

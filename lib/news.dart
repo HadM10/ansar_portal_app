@@ -81,7 +81,7 @@ class _NewsPageState extends State<NewsPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                 AspectRatio(
-                aspectRatio: 4 / 3,
+                aspectRatio: 2 / 2.5,
                   child: ClipRRect(
                     borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
                     child: Image.network(

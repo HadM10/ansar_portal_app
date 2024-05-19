@@ -97,7 +97,7 @@ class _DealsPageState extends State<DealsPage> {
                     ),
                   ),
                   AspectRatio(
-                    aspectRatio: 4 / 3,
+                    aspectRatio: 3 / 3,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [

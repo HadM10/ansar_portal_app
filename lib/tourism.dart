@@ -9,7 +9,7 @@ class TourismPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'TOURISM',
+          'ANSAR',
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'kuro',
@@ -23,7 +23,7 @@ class TourismPage extends StatelessWidget {
       body: ListView(
         children: [
           // Section 1: About Ansar - Carousel Slider
-          Padding(padding: EdgeInsets.all(20.0),
+          Padding(padding: EdgeInsets.only(top: 20.0),
             child: Center(child: Text(
               'About Ansar',
               style: TextStyle(
@@ -35,10 +35,9 @@ class TourismPage extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: 20.0),
             child: CarouselSlider(
               options: CarouselOptions(
-                aspectRatio: 16 / 9, // Adjust the aspect ratio as needed
+                aspectRatio: 4 / 5, // Adjust the aspect ratio as needed
                 autoPlay: true,
                 enlargeCenterPage: true,
               ),
@@ -52,7 +51,7 @@ class TourismPage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 20), // Adjust the spacing as needed
+          SizedBox(height: 10), // Adjust the spacing as needed
           // Add your places or monuments section here
           // Section 2: Places or Monuments - Cards
           Padding(
@@ -71,19 +70,19 @@ class TourismPage extends StatelessWidget {
                 ),
                 SizedBox(height: 20.0),
                 // Replace these cards with your own
-                _buildPlaceCard('ملتقى الفنيق', 'Description 1',
+                _buildPlaceCard('ملتقى الفنيق',
                     'assets/phoenix.jpg'),
                 SizedBox(height: 20.0),
-                _buildPlaceCard('المدينة الرياضية', 'Description 2',
+                _buildPlaceCard('المدينة الرياضية',
                     'assets/sportcity.jpg'),
                 SizedBox(height: 20.0),
-                _buildPlaceCard('ملعب القائد السيد موسى', 'Description 3',
+                _buildPlaceCard('ملعب القائد السيد موسى',
                     'assets/mousastadium.jpg'),
                 SizedBox(height: 20.0),
-                _buildPlaceCard('ملعب انصار الشعبي ', 'Description 3',
+                _buildPlaceCard('ملعب انصار الشعبي ',
                     'assets/stadium.jpg'),
                 SizedBox(height: 20.0),
-                _buildPlaceCard('مقام ابي ذر الغفاري', 'Description 3',
+                _buildPlaceCard('مقام ابي ذر الغفاري',
                     'assets/makam.jpg'),
               ],
             ),
@@ -93,7 +92,7 @@ class TourismPage extends StatelessWidget {
     );
   }
 
-  Widget _buildPlaceCard(String title, String description, String imageUrl) {
+  Widget _buildPlaceCard(String title, String imageUrl) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
@@ -110,6 +109,7 @@ class TourismPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Center(child:
                 Text(
                   title,
                   style: TextStyle(
@@ -117,11 +117,8 @@ class TourismPage extends StatelessWidget {
                     fontSize: 16.0,
                   ),
                 ),
-                SizedBox(height: 8.0),
-                Text(
-                  description,
-                  style: TextStyle(fontSize: 14.0),
                 ),
+                SizedBox(height: 8.0),
               ],
             ),
           ),
