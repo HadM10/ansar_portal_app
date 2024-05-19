@@ -97,7 +97,7 @@ class _DealsPageState extends State<DealsPage> {
                     ),
                   ),
                   AspectRatio(
-                    aspectRatio: 4 / 3,
+                    aspectRatio: 3/ 3,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -122,13 +122,13 @@ class _DealsPageState extends State<DealsPage> {
                           Center(child: Text(
                             dealItem.title,
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'kuro',
                             ),
                           ),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: 5),
                           Center(child: Text(
                             dealItem.description,
                             style: TextStyle(

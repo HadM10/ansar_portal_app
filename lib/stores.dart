@@ -255,9 +255,9 @@ class _StoresPageState extends State<StoresPage> {
       )
           :   Column(
         children: [
-          SizedBox(height: 10),
+          SizedBox(height: 0.5),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(2.0),
             child: TextField(
               controller: _searchController,
               cursorColor: Colors.deepOrange[700],
@@ -289,7 +289,7 @@ class _StoresPageState extends State<StoresPage> {
             ),
           ),
 
-          SizedBox(height: 10),
+          SizedBox(height: 0.5),
 
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -309,7 +309,7 @@ class _StoresPageState extends State<StoresPage> {
 
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      margin: EdgeInsets.only(right: 10),
+                      margin: EdgeInsets.only(right: 1),
                       decoration: BoxDecoration(
                         color: selectedCategory == null ? Colors.deepOrange : null,
                         borderRadius: BorderRadius.circular(20),
@@ -319,13 +319,13 @@ class _StoresPageState extends State<StoresPage> {
 
                       ),
                       child: Text(
-                        'All Stores',
+                        'All Stores/المتاجر',
                         style: TextStyle(fontFamily: 'kuro', color: selectedCategory == null ? Colors.white : null),
                       ),
                     ),
                   ),
 
-                  SizedBox(width: 10),
+                  SizedBox(width: 3),
                   ...categories.map((category) {
                     final isSelected = category == selectedCategory;
                     return GestureDetector(
@@ -359,7 +359,7 @@ class _StoresPageState extends State<StoresPage> {
             ),
           ),
 
-          SizedBox(height: 20),
+          SizedBox(height: 5),
 
           Expanded(
             child: ListView.builder(

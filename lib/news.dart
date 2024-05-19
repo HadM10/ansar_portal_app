@@ -56,7 +56,7 @@ class _NewsPageState extends State<NewsPage> {
     )
         :  Column(
     children: [
-    SizedBox(height: 20), // Add a SizedBox for spacing
+    SizedBox(height: 5), // Add a SizedBox for spacing
     Expanded(
     child: ListView.builder(
 
@@ -81,7 +81,7 @@ class _NewsPageState extends State<NewsPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                 AspectRatio(
-                aspectRatio: 4 / 3,
+                aspectRatio: 6/ 8,
                   child: ClipRRect(
                     borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
                     child: Image.network(
@@ -104,7 +104,7 @@ class _NewsPageState extends State<NewsPage> {
                             fontFamily: 'kuro',
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 1),
                         Text(
                           newsItem.content,
                           style: TextStyle(
@@ -112,7 +112,7 @@ class _NewsPageState extends State<NewsPage> {
                             fontFamily: 'kuro',
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 1),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -120,7 +120,7 @@ class _NewsPageState extends State<NewsPage> {
                               TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: 'Publication Date: ',
+                                    text: ' تاريخ النشر: ',
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontFamily: 'kuro',

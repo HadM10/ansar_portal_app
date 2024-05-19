@@ -9,7 +9,7 @@ class TourismPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'TOURISM',
+          'ANSAR',
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'kuro',
@@ -38,7 +38,7 @@ class TourismPage extends StatelessWidget {
             margin: EdgeInsets.symmetric(vertical: 20.0),
             child: CarouselSlider(
               options: CarouselOptions(
-                aspectRatio: 16 / 9, // Adjust the aspect ratio as needed
+                aspectRatio: 4 / 5, // Adjust the aspect ratio as needed
                 autoPlay: true,
                 enlargeCenterPage: true,
               ),
@@ -71,6 +71,7 @@ class TourismPage extends StatelessWidget {
                 ),
                 SizedBox(height: 20.0),
                 // Replace these cards with your own
+
                 _buildPlaceCard('ملتقى الفنيق', 'Description 1',
                     'assets/phoenix.jpg'),
                 SizedBox(height: 20.0),

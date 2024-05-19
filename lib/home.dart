@@ -179,7 +179,7 @@ class HomePage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const StoresPage()),
                   );
                 }),
-                _buildIconWithLabel(FontAwesomeIcons.buildingColumns, 'TOURISM', () {
+                _buildIconWithLabel(FontAwesomeIcons.buildingColumns, 'ANSAR', () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) =>TourismPage()),
