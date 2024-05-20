@@ -12,9 +12,10 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   late GoogleMapController mapController;
   bool _isLocationEnabled = false;
+  MapType _currentMapType = MapType.normal;
 
   // Set initial coordinates for the map
-  final LatLng _center = const LatLng(33.8531, 35.8623); // Coordinates for Ansar village
+  final LatLng _center = const LatLng(33.376495361328125, 35.360782623291016); // Coordinates for Ansar, Lebanon
 
   // Function to handle when the map is created
   void _onMapCreated(GoogleMapController controller) {
@@ -34,6 +35,13 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
+  // Function to toggle map type
+  void _toggleMapType() {
+    setState(() {
+      _currentMapType = (_currentMapType == MapType.normal) ? MapType.satellite : MapType.normal;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,24 +58,41 @@ class _MapScreenState extends State<MapScreen> {
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: _center,
-          zoom: 11.0,
-        ),
-        markers: {
-          // Add a marker for Ansar Village
-          Marker(
-            markerId: const MarkerId('ansar'),
-            position: _center,
-            infoWindow: const InfoWindow(
-              title: 'Ansar Village',
-              snippet: 'Welcome to Ansar!',
+      body: Stack(
+        children: [
+          GoogleMap(
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: CameraPosition(
+              target: _center,
+              zoom: 14.0, // Adjust the zoom level to match the HTML map
+            ),
+            mapType: _currentMapType,
+            markers: {
+              // Add a marker for Ansar, Lebanon
+              Marker(
+                markerId: const MarkerId('ansar'),
+                position: _center,
+                infoWindow: const InfoWindow(
+                  title: 'Ansar, Lebanon',
+                  snippet: 'Welcome to Ansar!',
+                ),
+              ),
+            },
+            myLocationEnabled: _isLocationEnabled, // Enable MyLocation layer based on permission
+          ),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: FloatingActionButton(
+              onPressed: _toggleMapType,
+              backgroundColor: Colors.deepOrange[700],
+              child: Icon(
+                _currentMapType == MapType.normal ? Icons.satellite : Icons.map,
+                color: Colors.white,
+              ),
             ),
           ),
-        },
-        myLocationEnabled: _isLocationEnabled, // Enable MyLocation layer based on permission
+        ],
       ),
     );
   }

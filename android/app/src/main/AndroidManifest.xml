@@ -7,7 +7,7 @@
         android:icon="@mipmap/ansarhomelogo">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAZsA7IxhpOx_T6qSh9JrCtdvQYsMtywXg"/>
+            android:value="AIzaSyCScAiTAy5hyTN_eSQcFiechAazPk0KUg4"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -15,6 +15,7 @@ class StoreDetailsPage extends StatefulWidget {
 
 class _StoreDetailsPageState extends State<StoreDetailsPage> {
   Map<String, dynamic>? storeDetails;
+  int _currentIndex = 0; // Add this line
 
   @override
   void initState() {
@@ -26,8 +27,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
     try {
       final response = await http.get(
         Uri.parse(
-            'https://ansarportal-deaa9ded50c7.herokuapp.com/api/store_details.php?store_id=${widget
-                .storeId}'),
+            'https://ansarportal-deaa9ded50c7.herokuapp.com/api/store_details.php?store_id=${widget.storeId}'),
       );
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
@@ -43,12 +43,25 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
   }
 
   Widget _buildImageSlider() {
-    return Stack(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+      Container(
+      height: 30, // Height of the black line
+      color: Colors.black,
+    ),// Black color
+
+     Stack(
       children: [
         Container(
           height: 350, // Adjust the height as needed
           child: PageView.builder(
             itemCount: storeDetails!['images'].length,
+            onPageChanged: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
             itemBuilder: (context, index) {
               return Image.network(
                 storeDetails!['images'][index],
@@ -57,6 +70,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
             },
           ),
         ),
+
         Positioned(
           top: 16,
           left: 16,
@@ -76,8 +90,27 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
             ),
           ),
         ),
+        Positioned(
+          bottom: 16,
+          right: 16,
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              '${_currentIndex + 1}/${storeDetails!['images'].length}',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ),
       ],
-    );
+    ),
+    ]);
   }
 
   Widget _buildDetailRow(IconData icon, String value, String? url, String? phone) {
@@ -90,8 +123,7 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
             // Add code to open the corresponding social media link
             if (url != null && url.isNotEmpty) {
               _launchURL(url);
-            }
-            else if (phone != null) {
+            } else if (phone != null) {
               _launchPhone(phone); // Call phone number if available
             }
           },
@@ -121,7 +153,8 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                   Container(
                     width: double.infinity,
                     color: Colors.grey.shade900,
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                    padding:
+                    EdgeInsets.symmetric(vertical: 12, horizontal: 15),
                     child: Text(
                       storeDetails!['store_name'],
                       style: TextStyle(
@@ -134,13 +167,15 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                   ),
                   SizedBox(height: 8),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    padding:
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           storeDetails!['description'],
-                          style: TextStyle(fontSize: 18, fontFamily: 'kuro'),
+                          style:
+                          TextStyle(fontSize: 18, fontFamily: 'kuro'),
                         ),
                         SizedBox(height: 15),
                         Container(
@@ -164,9 +199,8 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                       storeDetails!['phone_number'],
                       null,
                       storeDetails!['phone_number'],
-                      ),
                     ),
-
+                  ),
                   SizedBox(height: 15),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
@@ -174,24 +208,32 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                       onTap: () {
                         // Add code to open map with store location
                       },
-                      child: _buildDetailRow(
-                          Icons.location_on,  storeDetails!['location'], null, null),
+                      child: _buildDetailRow(Icons.location_on,
+                          storeDetails!['location'], null, null),
                     ),
                   ),
-                  SizedBox(height: 40),
+                  SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       IconButton(
-                        icon: Image.asset('assets/facebook.png', width: 40, height: 40,),
+                        icon: Image.asset(
+                          'assets/facebook.png',
+                          width: 40,
+                          height: 40,
+                        ),
                         color: Color(0xFF3b5998),
-                        iconSize: 40,// Facebook blue color
+                        iconSize: 40, // Facebook blue color
                         onPressed: () {
                           _launchURL(storeDetails!['facebook_url']);
                         },
                       ),
                       IconButton(
-                        icon: Image.asset('assets/instagram.png', width: 48, height: 48,),
+                        icon: Image.asset(
+                          'assets/instagram.png',
+                          width: 48,
+                          height: 48,
+                        ),
                         color: Color(0xFFc32aa3),
                         iconSize: 40,
                         onPressed: () {
@@ -199,7 +241,11 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                         },
                       ),
                       IconButton(
-                        icon: Image.asset('assets/whatsapp.png', width: 42, height: 42,),
+                        icon: Image.asset(
+                          'assets/whatsapp.png',
+                          width: 42,
+                          height: 42,
+                        ),
                         color: Color(0xFF25d366),
                         iconSize: 40,
                         onPressed: () {
@@ -207,7 +253,11 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
                         },
                       ),
                       IconButton(
-                        icon: Image.asset('assets/tiktok.png', width: 42, height: 42,),
+                        icon: Image.asset(
+                          'assets/tiktok.png',
+                          width: 42,
+                          height: 42,
+                        ),
                         color: Color(0xFF000000),
                         iconSize: 40,
                         onPressed: () {
@@ -227,8 +277,6 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
           valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange),
         ),
       ),
-
-
     );
   }
 
@@ -244,8 +292,8 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
   // Function to launch phone app with the provided number
   void _launchPhone(String phoneNumber) async {
     final Uri phoneLaunchUri = Uri(scheme: 'tel', path: phoneNumber);
-    if (await canLaunch(phoneLaunchUri.toString())) {
-      await launch(phoneLaunchUri.toString());
+    if (await canLaunchUrl(phoneLaunchUri)) {
+      await launchUrl(phoneLaunchUri);
     } else {
       throw 'Could not launch $phoneLaunchUri';
     }
