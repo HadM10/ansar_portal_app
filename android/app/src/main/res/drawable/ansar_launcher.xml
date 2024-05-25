@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background color -->
+    <item android:drawable="@color/dark_orange"/>
+    <!-- Rectangle shape -->
+    <!-- Custom text -->
+    <item android:width="400dp" android:height="400dp" android:gravity="center">
+        <bitmap
+            android:src="@drawable/ansarportal"
+            />
+    </item>
+
+</layer-list>
