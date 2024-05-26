@@ -282,20 +282,12 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
 
   Future<void> _launchURL(String url) async {
     Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 
   // Function to launch phone app with the provided number
   void _launchPhone(String phoneNumber) async {
     final Uri phoneLaunchUri = Uri(scheme: 'tel', path: phoneNumber);
-    if (await canLaunchUrl(phoneLaunchUri)) {
       await launchUrl(phoneLaunchUri);
-    } else {
-      throw 'Could not launch $phoneLaunchUri';
-    }
   }
 }
