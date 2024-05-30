@@ -36,7 +36,7 @@ class _NewsPageState extends State<NewsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'NEWS',
+          'اخر الأخبار',
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'kuro',
@@ -120,7 +120,7 @@ class _NewsPageState extends State<NewsPage> {
                               TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: 'Publication Date: ',
+                                    text: 'تاريخ النشر: ',
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontFamily: 'kuro',

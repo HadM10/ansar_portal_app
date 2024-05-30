@@ -23,9 +23,9 @@ class TourismPage extends StatelessWidget {
       body: ListView(
         children: [
           // Section 1: About Ansar - Carousel Slider
-          Padding(padding: EdgeInsets.only(top: 20.0),
+          Padding(padding: EdgeInsets.only(top: 10.0),
             child: Center(child: Text(
-              'About Ansar',
+              '',
               style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
@@ -37,7 +37,7 @@ class TourismPage extends StatelessWidget {
           Container(
             child: CarouselSlider(
               options: CarouselOptions(
-                aspectRatio: 4 / 5, // Adjust the aspect ratio as needed
+                aspectRatio: 4 / 4.5, // Adjust the aspect ratio as needed
                 autoPlay: true,
                 enlargeCenterPage: true,
               ),
@@ -60,7 +60,7 @@ class TourismPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(child: Text(
-                  'Places or Monuments',
+                  'معالم انصار',
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -69,12 +69,24 @@ class TourismPage extends StatelessWidget {
                 ),
                 ),
                 SizedBox(height: 20.0),
-                // Replace these cards with your own
+                _buildPlaceCard('جمعية الرسالة للاسعاف الصحي',
+                    'assets/risele.jpg'),
+                SizedBox(height: 20.0),
+                _buildPlaceCard(' الهيئة الصحية الاسلامية',
+                    'assets/hy2a.jpg'),
+                SizedBox(height: 20.0),
+                _buildPlaceCard(' النجدة الشعبية',
+                    'assets/njde.jpg'),
+                SizedBox(height: 20.0),
+                _buildPlaceCard('بلدية انصار',
+                    'assets/bldye.jpg'),
+                SizedBox(height: 20.0),
+                _buildPlaceCard('ثانوية أنصار الرسميّة',
+                    'assets/ansarschool.jpg'),
                 _buildPlaceCard('ملتقى الفنيق',
                     'assets/phoenix.jpg'),
-                SizedBox(height: 20.0),
-                _buildPlaceCard('المدينة الرياضية',
-                    'assets/sportcity.jpg'),
+                _buildPlaceCard(' السوق التراثي',
+                    'assets/fneq.jpg'),
                 SizedBox(height: 20.0),
                 _buildPlaceCard('ملعب القائد السيد موسى',
                     'assets/mousastadium.jpg'),
@@ -82,8 +94,15 @@ class TourismPage extends StatelessWidget {
                 _buildPlaceCard('ملعب انصار الشعبي ',
                     'assets/stadium.jpg'),
                 SizedBox(height: 20.0),
+                _buildPlaceCard('حديقة انصار ',
+                    'assets/7ady2a.jpg'),
+                SizedBox(height: 20.0),
                 _buildPlaceCard('مقام ابي ذر الغفاري',
                     'assets/makam.jpg'),
+                SizedBox(height: 20.0),
+                _buildPlaceCard('المدينة الرياضية',
+                    'assets/sportcity.jpg'),
+                SizedBox(height: 20.0),
               ],
             ),
           ),

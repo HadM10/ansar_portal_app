@@ -42,6 +42,8 @@ dependencies:
 
 
 
+
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
@@ -86,6 +88,13 @@ flutter:
     - assets/phoenix.jpg
     - assets/sportcity.jpg
     - assets/stadium.jpg
+    - assets/ansarschool.jpg
+    - assets/njde.jpg
+    - assets/hy2a.jpg
+    - assets/risele.jpg
+    - assets/fneq.jpg
+    - assets/bldye.jpg
+    - assets/7ady2a.jpg
   fonts:
     - family: kuro
       fonts:
@@ -127,3 +136,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
