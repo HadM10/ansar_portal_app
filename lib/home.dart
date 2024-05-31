@@ -13,8 +13,10 @@ import 'map.dart';
 import 'news.dart';
 import 'stores.dart';
 
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
+
 
   final storage = const FlutterSecureStorage();
 
@@ -33,6 +35,7 @@ class HomePage extends StatelessWidget {
   }
 
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -57,20 +60,43 @@ class HomePage extends StatelessWidget {
                 }
             ),
           ),
+
           Positioned(
             top: 40,
             right: 10,
+
             child: PopupMenuButton<int>(
               icon: Icon(Icons.menu, size: 45, color: Colors.white),
               offset: Offset(0, 60),
               itemBuilder: (BuildContext context) => [
-                PopupMenuItem<int>(
-                  value: 1,
-                  child: ListTile(
-                    leading: Icon(Icons.info, color: Colors.black87),
-                    title: Text('About Us', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
-                  ),
+              PopupMenuItem<int>(
+                value: 1,
+                child: ListTile(
+                  leading: Icon(Icons.info, color: Colors.black87),
+                  title: Text('Our Service', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
+                ), onTap: () {
+                // Show a dialog or a toast with the message "Messi appears!"
+                // You can customize the appearance and behavior as needed.
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('ANSAR PORTAL'),
+                      content: Text("أهلاً بكم في بوابة أنصار، تطبيقكم الأمثل لاكتشاف كل ما هو جديد ومميز في أنصار ! نقدم لكم منصة شاملة تعرض أحدث الأخبار، العروض الحصرية، ومعلومات عن جميع المتاجر المحلية. تم تصميم بوابة أنصار لتجعل حياتكم أسهل، حيث يمكنكم العثور على كل ما تحتاجونه بلمسة زر. سواء كنتم تبحثون عن أحدث العروض، أو ترغبون في استكشاف متاجر جديدة، فإن بوابة أنصار هي دليلكم الأول. نهدف إلى تعزيز التجارة المحلية ودعم الاقتصاد في أنصار من خلال تسهيل الوصول إلى المعلومات والعروض التي تهمكم. انضموا إلينا الآن وكونوا جزءًا من مجتمع بوابة أنصار!"),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
                 ),
+
                 PopupMenuItem<int>(
                   value: 2,
                   child: ListTile(
@@ -79,7 +105,7 @@ class HomePage extends StatelessWidget {
                     onTap: () {
                       final Uri emailLaunchUri = Uri(
                         scheme: 'mailto',
-                        path: 'hmcodeshinobi@gmail.com',  // Replace with your email address
+                        path: 'ansarportal@gmail.com',  // Replace with your email address
                         query: encodeQueryParameters(<String, String>{
                           'subject': 'Inquiry from MyApp', // Optional: Set the subject
                         }),

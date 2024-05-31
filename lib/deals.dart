@@ -39,7 +39,7 @@ class _DealsPageState extends State<DealsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'DEALS',
+          'أهم العروضات',
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'kuro',
