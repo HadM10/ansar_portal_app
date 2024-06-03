@@ -95,6 +95,9 @@ flutter:
     - assets/fneq.jpg
     - assets/bldye.jpg
     - assets/7ady2a.jpg
+    - assets/mahdi.jpeg
+    - assets/hadi.png
+    - assets/ansar11.jpeg
   fonts:
     - family: kuro
       fonts:

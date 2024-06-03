@@ -17,7 +17,6 @@ import 'stores.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
-
   final storage = const FlutterSecureStorage();
 
   Future<void> _signOut(BuildContext context) async {
@@ -35,7 +34,6 @@ class HomePage extends StatelessWidget {
   }
 
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -53,82 +51,63 @@ class HomePage extends StatelessWidget {
             top: 45,
             left: 10,
             child: IconButton(
-                icon: Icon(Icons.share, size: 35),
-                color: Colors.white,
-                onPressed: () {
-                  Share.share('Check out this awesome app!');
-                }
+              icon: Icon(Icons.share, size: 35),
+              color: Colors.white,
+              onPressed: () {
+                Share.share('Check out this awesome app!');
+              },
             ),
           ),
-
           Positioned(
             top: 40,
             right: 10,
-
             child: PopupMenuButton<int>(
               icon: Icon(Icons.menu, size: 45, color: Colors.white),
               offset: Offset(0, 60),
-              itemBuilder: (BuildContext context) => [
-              PopupMenuItem<int>(
-                value: 1,
-                child: ListTile(
-                  leading: Icon(Icons.info, color: Colors.black87),
-                  title: Text('Our Service', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
-                ), onTap: () {
-                // Show a dialog or a toast with the message "Messi appears!"
-                // You can customize the appearance and behavior as needed.
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('ANSAR PORTAL'),
-                      content: Text("أهلاً بكم في بوابة أنصار، تطبيقكم الأمثل لاكتشاف كل ما هو جديد ومميز في أنصار ! نقدم لكم منصة شاملة تعرض أحدث الأخبار، العروض الحصرية، ومعلومات عن جميع المتاجر المحلية. تم تصميم بوابة أنصار لتجعل حياتكم أسهل، حيث يمكنكم العثور على كل ما تحتاجونه بلمسة زر. سواء كنتم تبحثون عن أحدث العروض، أو ترغبون في استكشاف متاجر جديدة، فإن بوابة أنصار هي دليلكم الأول. نهدف إلى تعزيز التجارة المحلية ودعم الاقتصاد في أنصار من خلال تسهيل الوصول إلى المعلومات والعروض التي تهمكم. انضموا إلينا الآن وكونوا جزءًا من مجتمع بوابة أنصار!"),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('OK'),
-                        ),
-                      ],
-                    );
-                  },
-                );
+              onSelected: (int value) async {
+                if (value == 1) {
+                  _showOurServiceDialog(context);
+                } else if (value == 2) {
+                  _showAboutUsDialog(context);
+                } else if (value == 3) {
+                  _launchEmail();
+                } else if (value == 4) {
+                  await _signOut(context);
+                }
               },
+              itemBuilder: (BuildContext context) => [
+                PopupMenuItem<int>(
+                  value: 1,
+                  child: ListTile(
+                    leading: Icon(Icons.info, color: Colors.black87),
+                    title: Text('Our Service', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
+                  ),
                 ),
-
                 PopupMenuItem<int>(
                   value: 2,
                   child: ListTile(
-                    leading: Icon(Icons.email, color: Colors.black87),
-                    title: Text('Contact Us', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
-                    onTap: () {
-                      final Uri emailLaunchUri = Uri(
-                        scheme: 'mailto',
-                        path: 'ansarportal@gmail.com',  // Replace with your email address
-                        query: encodeQueryParameters(<String, String>{
-                          'subject': 'Inquiry from MyApp', // Optional: Set the subject
-                        }),
-                      );
-                      launchUrl(emailLaunchUri);
-                    },
+                    leading: Icon(Icons.supervised_user_circle, color: Colors.black87),
+                    title: Text('ABOUT US', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
                   ),
                 ),
                 PopupMenuItem<int>(
                   value: 3,
                   child: ListTile(
+                    leading: Icon(Icons.email, color: Colors.black87),
+                    title: Text('Contact Us', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
+                  ),
+                ),
+                PopupMenuItem<int>(
+                  value: 4,
+                  child: ListTile(
                     leading: Icon(Icons.logout, color: Colors.black87),
                     title: Text('Logout', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
-                    onTap: () {
-                      Navigator.pop(context); // Close the menu before logging out
-                      _signOut(context);
-                    },
                   ),
                 ),
               ],
             ),
           ),
-        Positioned(
+          Positioned(
             top: 50,
             left: 0,
             right: 0,
@@ -162,7 +141,6 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          // Bottom Row
           Positioned(
             bottom: 60,
             left: 20,
@@ -191,7 +169,6 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          // Bottom Row 2
           Positioned(
             bottom: 180,
             left: 20,
@@ -208,10 +185,10 @@ class HomePage extends StatelessWidget {
                 _buildIconWithLabel(FontAwesomeIcons.buildingColumns, 'ANSAR', () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) =>TourismPage()),
+                    MaterialPageRoute(builder: (context) => TourismPage()),
                   );
                 }, iconSize: 32),
-                _buildIconWithLabel(Icons.local_offer, 'DEALS', () {
+                _buildIconWithLabel(Icons.discount, 'DEALS', () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const DealsPage()),
@@ -259,5 +236,129 @@ class HomePage extends StatelessWidget {
     return params.entries
         .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
         .join('&');
+  }
+
+  Widget _buildPlaceCard(String title, String imageUrl) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Image.asset(imageUrl),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8.0),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showOurServiceDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('ANSAR PORTAL'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                  "أهلاً بكم في بوابة أنصار، تطبيقكم الأمثل لاكتشاف كل ما هو جديد ومميز في أنصار ! نقدم لكم منصة شاملة تعرض أحدث الأخبار، العروض الحصرية، ومعلومات عن جميع المتاجر المحلية. تم تصميم بوابة أنصار لتجعل حياتكم أسهل، حيث يمكنكم العثور على كل ما تحتاجونه بلمسة زر. سواء كنتم تبحثون عن أحدث العروض، أو ترغبون في استكشاف متاجر جديدة، فإن بوابة أنصار هي دليلكم الأول. نهدف إلى تعزيز التجارة المحلية ودعم الاقتصاد في أنصار من خلال تسهيل الوصول إلى المعلومات والعروض التي تهمكم. انضموا إلينا الآن وكونوا جزءًا من مجتمع بوابة أنصار!"),
+              SizedBox(height: 15),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                padding: EdgeInsets.all(8),
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/ansar11.jpeg',
+                      width: 270,
+                      height: 170,
+                      fit: BoxFit.cover,
+                    ),
+
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showAboutUsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Column(
+            children: [
+              Text('      TopCoders\nsoftware company'),
+
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 10.0),
+              _buildPlaceCard('Mahdi Fadel Assi - "CEO"', 'assets/mahdi.jpeg'),
+              SizedBox(height: 10),
+              SizedBox(height: 10.0),
+              _buildPlaceCard('Hadi Ahmad Makki - "CTO"', 'assets/hadi.png'),
+              SizedBox(height: 10),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+
+  void _launchEmail() async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: 'topcoders.lb@gmail.com',  // Replace with your email address
+      query: encodeQueryParameters(<String, String>{
+        'subject': 'Inquiry from MyApp', // Optional: Set the subject
+      }),
+    );
+    launchUrl(emailLaunchUri);
   }
 }
