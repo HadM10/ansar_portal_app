@@ -37,13 +37,13 @@ class SocialsPage extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (imagePath.contains('whatsapp')) {
-          _launchURL('whatsapp://send?phone=YOUR_PHONE_NUMBER');
+          _launchURL('whatsapp://send?phone=+96171363816');
         } else if (imagePath.contains('instagram')) {
-          _launchURL('https://www.instagram.com/YOUR_USERNAME/');
+          _launchURL('https://www.instagram.com/topcoders.lb');
         } else if (imagePath.contains('facebook')) {
-          _launchURL('https://www.facebook.com/YOUR_USERNAME/');
+          _launchURL('https://www.facebook.com/profile.php?id=61560817222567');
         } else if (imagePath.contains('tiktok')) {
-          _launchURL('https://www.tiktok.com/@YOUR_USERNAME');
+          _launchURL('https://www.tiktok.com/@topcoders.lb?_t=8mvMjpQXnv7&_r=1');
         }
       },
       child: Image.asset(
@@ -54,10 +54,8 @@ class SocialsPage extends StatelessWidget {
   }
 
   Future<void> _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+    Uri uri = Uri.parse(url);
+    await launchUrl(uri);
+
   }
 }
