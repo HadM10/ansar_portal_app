@@ -7,13 +7,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 import 'socials.dart';
 import 'deals.dart';
 import 'map.dart';
 import 'news.dart';
 import 'stores.dart';
-
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -88,7 +86,7 @@ class HomePage extends StatelessWidget {
                   value: 2,
                   child: ListTile(
                     leading: Icon(Icons.supervised_user_circle, color: Colors.black87),
-                    title: Text('ABOUT US', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
+                    title: Text('About Us', style: TextStyle(color: Colors.black87, fontFamily: 'kuro')),
                   ),
                 ),
                 PopupMenuItem<int>(
@@ -119,13 +117,13 @@ class HomePage extends StatelessWidget {
                   'assets/ansarportallogo.png',
                   height: 200,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 const Text(
                   'WELCOME',
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Kuro',
-                    fontSize: 30,
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -135,7 +133,17 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Kuro',
-                    fontSize: 30,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20,),
+                const Text(
+                  'مرحباً بكم في بوابة أنصار',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Kuro',
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -226,7 +234,7 @@ class HomePage extends StatelessWidget {
           SizedBox(height: 8),
           Text(
             label,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontFamily: 'kuro'),
           ),
         ],
       ),
@@ -240,35 +248,27 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildPlaceCard(String title, String imageUrl) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Image.asset(imageUrl),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 8.0),
-              ],
-            ),
+    return Column(
+      children: [
+        ClipOval(
+          child: Image.asset(
+            imageUrl,
+            fit: BoxFit.cover,
+            width: 200.0,
+            height: 200.0,
           ),
-        ],
-      ),
+        ),
+        SizedBox(height: 15.0),
+        Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontFamily: 'kuro',
+            fontSize: 16.0,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 
@@ -277,12 +277,17 @@ class HomePage extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('ANSAR PORTAL'),
+          title: Text(
+            'ANSAR PORTAL',
+            style: TextStyle(fontFamily: 'kuro'),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                  "أهلاً بكم في بوابة أنصار، تطبيقكم الأمثل لاكتشاف كل ما هو جديد ومميز في أنصار ! نقدم لكم منصة شاملة تعرض أحدث الأخبار، العروض الحصرية، ومعلومات عن جميع المتاجر المحلية. تم تصميم بوابة أنصار لتجعل حياتكم أسهل، حيث يمكنكم العثور على كل ما تحتاجونه بلمسة زر. سواء كنتم تبحثون عن أحدث العروض، أو ترغبون في استكشاف متاجر جديدة، فإن بوابة أنصار هي دليلكم الأول. نهدف إلى تعزيز التجارة المحلية ودعم الاقتصاد في أنصار من خلال تسهيل الوصول إلى المعلومات والعروض التي تهمكم. انضموا إلينا الآن وكونوا جزءًا من مجتمع بوابة أنصار!"),
+                "أهلاً بكم في بوابة أنصار، تطبيقكم الأمثل لاكتشاف كل ما هو جديد ومميز في أنصار ! نقدم لكم منصة شاملة تعرض أحدث الأخبار، العروض الحصرية، ومعلومات عن جميع المتاجر المحلية. تم تصميم بوابة أنصار لتجعل حياتكم أسهل، حيث يمكنكم العثور على كل ما تحتاجونه بلمسة زر. سواء كنتم تبحثون عن أحدث العروض، أو ترغبون في استكشاف متاجر جديدة، فإن بوابة أنصار هي دليلكم الأول. نهدف إلى تعزيز التجارة المحلية ودعم الاقتصاد في أنصار من خلال تسهيل الوصول إلى المعلومات والعروض التي تهمكم. انضموا إلينا الآن وكونوا جزءًا من مجتمع بوابة أنصار!",
+                style: TextStyle(fontFamily: 'kuro'),
+              ),
               SizedBox(height: 15),
               Container(
                 decoration: BoxDecoration(
@@ -305,7 +310,6 @@ class HomePage extends StatelessWidget {
                       height: 170,
                       fit: BoxFit.cover,
                     ),
-
                   ],
                 ),
               ),
@@ -316,7 +320,10 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: Text(
+                'OK',
+                style: TextStyle(fontFamily: 'kuro', color: Colors.black),
+              ),
             ),
           ],
         );
@@ -329,35 +336,34 @@ class HomePage extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Column(
-            children: [
-              Text('      TopCoders\nsoftware company'),
-
-            ],
+          title: Text(
+            'TopCoders\n Software Company',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontFamily: 'kuro'),
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 10.0),
-              _buildPlaceCard('Mahdi Fadel Assi - "CEO"', 'assets/mahdi.jpeg'),
-              SizedBox(height: 10),
-              SizedBox(height: 10.0),
-              _buildPlaceCard('Hadi Ahmad Makki - "CTO"', 'assets/hadi.png'),
-              SizedBox(height: 10),
-            ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 10.0),
+                _buildPlaceCard('Mahdi Fadel Assi - "CEO"', 'assets/mahdi.jpeg'),
+                SizedBox(height: 20.0),
+                _buildPlaceCard('Hadi Ahmad Makki - "CTO"', 'assets/hadi.png'),
+                SizedBox(height: 10.0),
+              ],
+            ),
           ),
         );
       },
     );
   }
 
-
   void _launchEmail() async {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: 'topcoders.lb@gmail.com',  // Replace with your email address
       query: encodeQueryParameters(<String, String>{
-        'subject': 'Inquiry from MyApp', // Optional: Set the subject
+        'subject': 'Inquiry from Ansar Portal', // Optional: Set the subject
       }),
     );
     launchUrl(emailLaunchUri);
