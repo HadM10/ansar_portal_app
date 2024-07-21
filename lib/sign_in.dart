@@ -100,7 +100,7 @@ class _SignInPageState extends State<SignInPage> {
           body: {
             'google_id': googleUser.id,
             'email': googleUser.email,
-            'clientId': '778123163617-p7dlpb019kbj3n46corgmleptr3ddk4d.apps.googleusercontent.com',
+            'clientId': '778123163617-ukimtbq00t0b21cm5n02602tdhg3quhh.apps.googleusercontent.com',
           },
         );
         if (response.statusCode == 200) {

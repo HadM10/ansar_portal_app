@@ -1,4 +1,4 @@
-package com.example.ansar_portal_mobile_app
+package com.topcoders.ansarportal
 
 import io.flutter.embedding.android.FlutterActivity
 
