@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class StoreDetailsPage extends StatefulWidget {
   final int storeId;
@@ -44,32 +45,38 @@ class _StoreDetailsPageState extends State<StoreDetailsPage> {
 
   Widget _buildImageSlider() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-      Container(
-      height: 30, // Height of the black line
-      color: Colors.black,
-    ),// Black color
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            height: 30, // Height of the black line
+            color: Colors.black,
+          ), // Black color
 
-     Stack(
-      children: [
-        Container(
-          height: 350, // Adjust the height as needed
-          child: PageView.builder(
-            itemCount: storeDetails!['images'].length,
-            onPageChanged: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            itemBuilder: (context, index) {
-              return Image.network(
-                storeDetails!['images'][index],
-                fit: BoxFit.cover,
-              );
-            },
-          ),
-        ),
+          Stack(
+            children: [
+              Container(
+                height: 350, // Adjust the height as needed
+                child: PageView.builder(
+                  itemCount: storeDetails!['images'].length,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                  itemBuilder: (context, index) {
+                    return CachedNetworkImage(
+                      imageUrl: storeDetails!['images'][index],
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    );
+                  },
+                ),
+              ),
 
         Positioned(
           top: 16,

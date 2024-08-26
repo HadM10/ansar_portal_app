@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:AnsarPortal/store_details.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Store {
   final int id;
@@ -421,9 +422,13 @@ class _StoresPageState extends State<StoresPage> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.vertical(
                                   top: Radius.circular(10)),
-                              child: Image.network(
-                                firstImage,
+                              child: CachedNetworkImage(
+                                imageUrl: firstImage,
                                 fit: BoxFit.cover,
+                                placeholder: (context, url) => Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                                errorWidget: (context, url, error) => Icon(Icons.error),
                               ),
                             ),
                           ),

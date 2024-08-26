@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:cached_network_image/cached_network_image.dart';
 
 class DealsPage extends StatefulWidget {
   const DealsPage({Key? key}) : super(key: key);
@@ -98,19 +99,15 @@ class _DealsPageState extends State<DealsPage> {
                   ),
                   AspectRatio(
                     aspectRatio: 3 / 3,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-
-                        Expanded(
-                          child: ClipRRect(
-                            child: Image.network(
-                              dealItem.imageUrl,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                    child: CachedNetworkImage(
+                      imageUrl: dealItem.imageUrl,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange),
                         ),
-                      ],
+                      ),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   ),
 

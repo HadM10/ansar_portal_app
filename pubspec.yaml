@@ -41,6 +41,8 @@ dependencies:
   carousel_slider: ^4.0.0
   flutter_native_splash: ^2.4.0
   cupertino_icons: ^1.0.6
+  cached_network_image: ^3.2.0
+  in_app_update: ^4.2.3
 
 
 flutter_native_splash:
@@ -249,6 +251,7 @@ flutter:
     - assets/hadi.png
     - assets/ansar11.jpeg
     - assets/ansarportal.png
+    - assets/abizarschool.jpg
   fonts:
     - family: kuro
       fonts:
